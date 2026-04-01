@@ -65,6 +65,9 @@ test:
 	@mkdir -p $(TSTD).in
 	@rm -fr $(TSTD).out
 	@mkdir -p $(TSTD).out
+	@make setup
+	@make bin/unit_tests
+	@make bin/hw6
 	@$(BIND)/$(TEST) --full-stats --verbose --json=$(TEST_RESULTS) -j1
 
 clean:
