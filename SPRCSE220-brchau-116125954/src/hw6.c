@@ -5,6 +5,47 @@
 
 typedef enum {FALSE, TRUE} BOOL; 
 
+int setup(int, char**, char**, char**, int*, int*, BOOL*);
+
+int main(int argc, char *argv[]) {
+    if(argc < 7){
+        return MISSING_ARGUMENT;
+    }
+    char *inputFile = argv[argc-2];
+    char *outputFile = argv[argc-1];
+    char *searchString = NULL;
+    char *replaceString = NULL;
+    int startLine = -1;
+    int endLine = -1;
+    BOOL wildcardEnabled = FALSE;
+    FILE *input;
+    FILE *output;
+    int result = setup(argc, argv, &searchString, &replaceString,
+                        &startLine,&endLine,&wildcardEnabled);
+    if(result == DUPLICATE_ARGUMENT){
+        return result;
+    }
+    else if((input = fopen(inputFile, "r")) == NULL){
+        return INPUT_FILE_MISSING;
+    }
+    else if((output = fopen(outputFile, "w")) == NULL){
+        return OUTPUT_FILE_UNWRITABLE;
+    }
+    else if(searchString == NULL || result == S_ARGUMENT_MISSING){
+        return S_ARGUMENT_MISSING;
+    }
+    else if(replaceString == NULL || result == R_ARGUMENT_MISSING){
+        return R_ARGUMENT_MISSING;
+    }
+    else if(result == L_ARGUMENT_INVALID){
+        return result;
+    }
+    else if(wildcardEnabled && ((*searchString != '*') ==(*(searchString + strlen(searchString) - 1) != '*'))){
+        return WILDCARD_INVALID;
+    }
+    return 0;
+}
+
 int setup(int argc, char **argv, char **searchString, 
     char **replaceString, int *startLine, int *endLine, 
     BOOL *wildcardEnabled){
@@ -99,43 +140,4 @@ int setup(int argc, char **argv, char **searchString,
         }
     }
     return errorStatus;
-}
-
-int main(int argc, char *argv[]) {
-    if(argc < 7){
-        return MISSING_ARGUMENT;
-    }
-    char *inputFile = argv[argc-2];
-    char *outputFile = argv[argc-1];
-    char *searchString = NULL;
-    char *replaceString = NULL;
-    int startLine = -1;
-    int endLine = -1;
-    BOOL wildcardEnabled = FALSE;
-    FILE *input;
-    FILE *output;
-    int result = setup(argc, argv, &searchString, &replaceString,
-                        &startLine,&endLine,&wildcardEnabled);
-    if(result == DUPLICATE_ARGUMENT){
-        return result;
-    }
-    else if((input = fopen(inputFile, "r")) == NULL){
-        return INPUT_FILE_MISSING;
-    }
-    else if((output = fopen(outputFile, "w")) == NULL){
-        return OUTPUT_FILE_UNWRITABLE;
-    }
-    else if(searchString == NULL || result == S_ARGUMENT_MISSING){
-        return S_ARGUMENT_MISSING;
-    }
-    else if(replaceString == NULL || result == R_ARGUMENT_MISSING){
-        return R_ARGUMENT_MISSING;
-    }
-    else if(result == L_ARGUMENT_INVALID){
-        return result;
-    }
-    else if(wildcardEnabled && ((*searchString != '*') ==(*(searchString + strlen(searchString) - 1) != '*'))){
-        return WILDCARD_INVALID;
-    }
-    return 0;
 }
