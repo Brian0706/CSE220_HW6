@@ -69,21 +69,21 @@ TestSuite(base_invalid_args, .timeout=TEST_TIMEOUT); // return code to OS
 static char args[ARGS_TEXT_LEN];
 
 // /* Check output file. */
-// Test(base_output, simple_search01, .description="Perform a simple replacement over entire file. Terms have the same length.") {
-//     char *test_name = "simple_search01";
-//     prep_files("unix.txt", test_name);    
-//     sprintf(args, "-s the -r WOLFIE %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
+Test(base_output, simple_search01, .description="Perform a simple replacement over entire file. Terms have the same length.") {
+    char *test_name = "simple_search01";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s the -r WOLFIE %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
 
-// Test(base_output, simple_search02, .description="Perform a simple replacement in a single line. Start line and end line are the same.") {
-//     char *test_name = "simple_search02";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-s machine -r device -l 23,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
+Test(base_output, simple_search02, .description="Perform a simple replacement in a single line. Start line and end line are the same.") {
+    char *test_name = "simple_search02";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s machine -r device -l 23,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
 
 // Test(base_output, simple_search03, .description="Perform a simple replacement within the range. Search text appears outside the range as well.") {
 //     char *test_name = "simple_search03";
