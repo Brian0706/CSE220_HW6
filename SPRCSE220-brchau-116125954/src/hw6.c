@@ -55,7 +55,7 @@ int setup(int argc, char **argv, char **searchString,
     int opt; 
     char *endPtr;
     int errorStatus = 0;
-    while((opt = getopt(argc, argv, ":ws:r:l")) != -1){
+    while((opt = getopt(argc, argv, ":ws:r:l:")) != -1){
         switch(opt){
             case ':':
                 printf("Caught Empty\n");
@@ -67,7 +67,7 @@ int setup(int argc, char **argv, char **searchString,
                         *replaceString = "";
                         break;
                     case 'l':
-                        errorStatus = L_ARGUMENT_INVALID;
+                        // errorStatus = L_ARGUMENT_INVALID;
                         break;
                 }
                 break;
@@ -103,13 +103,9 @@ int setup(int argc, char **argv, char **searchString,
                 if(*startLine != -1){
                     return DUPLICATE_ARGUMENT;
                 }
-                if(optarg == NULL){
-                    errorStatus = L_ARGUMENT_INVALID;
-                    break;
-                }
                 char larg[strlen(optarg) + 1];
                 strncpy(larg, optarg, strlen(optarg));
-                larg[strlen(optarg)] = '\0';
+                larg[strlen(optarg)+1] = '\0';
                 char * token = strtok(larg, ",");
                 if(token == NULL){
                     errorStatus = L_ARGUMENT_INVALID;
