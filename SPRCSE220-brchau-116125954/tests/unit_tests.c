@@ -149,198 +149,198 @@ static char args[ARGS_TEXT_LEN];
 //     expect_outfile_matches(test_name);
 // }
 
-// Test(base_output, wildcard_search01, .description="Perform a wildcard prefix replacement over some lines. Terms have different lengths.") {
-//     char *test_name = "wildcard_search01";
-//     prep_files("unix.txt", test_name);    
-//     sprintf(args, "-s re* -w -r \"New York\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search02, .description="Perform a wildcard prefix replacement over some lines. Terms have different lengths.") {
-//     char *test_name = "wildcard_search02";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-s pro* -r TURING -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search03, .description="Perform a wildcard prefix replacement in a single line. Start line and end line are the same.") {
-//     char *test_name = "wildcard_search03";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-s mac* -r device -w -l 23,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search04, .description="Perform a wildcard prefix replacement within the range. Search text appears outside the range as well.") {
-//     char *test_name = "wildcard_search04";
-//     prep_files("unix.txt", test_name);    
-//     sprintf(args, "-s ea* -w -r \"WELL TIMED\" -l 11,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search05, .description="Perform a wildcard prefix replacement within the specified range. Search term is followed by a punctuation mark.") {
-//     char *test_name = "wildcard_search05";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-l 1,22 -s intel* -w -r wisdom %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-
-// Test(base_output, wildcard_search06, .description="Perform a a wildcard prefix replacement over entire file. Search terms are followed by different characters.") {
-//     char *test_name = "wildcard_search06";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-s Manche* -r MANCHESTER -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search07, .description="Perform a a wildcard prefix replacement over entire file. Multiple occurences of the search text (at the beginning, in the middle, at the end).") {
-//     char *test_name = "wildcard_search07";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-w -s Tur* -r \"TURING THE GREAT\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search08, .description="Perform a wildcard prefix replacement over entire file. Input text contains a single word.") {
-//     char *test_name = "wildcard_search08";
-//     prep_files("oneword.txt", test_name);    
-//     sprintf(args, "-s Hom* -r \"This homework is effortless.\" -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search09, .description="Perform a wildcard prefix replacement over entire file. Search term doesn't appear in the input file.") {
-//     char *test_name = "wildcard_search09";
-//     prep_files("unix.txt", test_name);    
-//     sprintf(args, "-s CSE* -r \"Computer Science\" -w -l 1,45 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search10, .description="Perform a wildcard prefix replacement over entire file. No space after punctuation marks.") {
-//     char *test_name = "wildcard_search10";
-//     prep_files("punctuation.txt", test_name);    
-//     sprintf(args, "-w -s Bu* -r \" However,\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search11, .description="Perform a wildcard prefix replacement in some lines. Search term is not a prefix.") {
-//     char *test_name = "wildcard_search11";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-s pal* -w -r \"all\" -l 30,44 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-// Test(base_output, wildcard_search12, .description="Perform a wildcard prefix replacement over entire file. Search text is a word itself.") {
-//     char *test_name = "wildcard_search12";
-//     prep_files("turing.txt", test_name);    
-//     sprintf(args, "-s with* -r WITH -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-//     run_using_system_no_valgrind(test_name, args);
-//     expect_outfile_matches(test_name);
-// }
-
-Test(base_output, wildcard_search13, .description="Perform a wildcard suffix replacement over entire file. Terms have the same length.") {
-    char *test_name = "wildcard_search13";
+Test(base_output, wildcard_search01, .description="Perform a wildcard prefix replacement over some lines. Terms have different lengths.") {
+    char *test_name = "wildcard_search01";
     prep_files("unix.txt", test_name);    
-    sprintf(args, "-s *re -w -r \"New York\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s re* -w -r \"New York\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search14, .description="Perform a wildcard suffix replacement over entire file. Terms have different lengths.") {
-    char *test_name = "wildcard_search14";
+Test(base_output, wildcard_search02, .description="Perform a wildcard prefix replacement over some lines. Terms have different lengths.") {
+    char *test_name = "wildcard_search02";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-w -s *ring -r TURING %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s pro* -r TURING -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search15, .description="Perform a wildcard suffix replacement in a single line. Start line and end line are the same.") {
-    char *test_name = "wildcard_search15";
+Test(base_output, wildcard_search03, .description="Perform a wildcard prefix replacement in a single line. Start line and end line are the same.") {
+    char *test_name = "wildcard_search03";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-s *chine -w -r device -l 23,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s mac* -r device -w -l 23,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search16, .description="Perform a wildcard suffix replacement within the range. Search text appears outside the range as well.") {
-    char *test_name = "wildcard_search16";
+Test(base_output, wildcard_search04, .description="Perform a wildcard prefix replacement within the range. Search text appears outside the range as well.") {
+    char *test_name = "wildcard_search04";
     prep_files("unix.txt", test_name);    
-    sprintf(args, "-s *rly -w -r \"WELL TIMED\" -l 11,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s ea* -w -r \"WELL TIMED\" -l 11,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search17, .description="Perform a wildcard suffix replacement within the specified range. Search term is followed by a punctuation mark.") {
-    char *test_name = "wildcard_search17";
+Test(base_output, wildcard_search05, .description="Perform a wildcard prefix replacement within the specified range. Search term is followed by a punctuation mark.") {
+    char *test_name = "wildcard_search05";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-l 1,22 -s *gence -r wisdom -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-l 1,22 -s intel* -w -r wisdom %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search18, .description="Perform a a wildcard suffix replacement over entire file. Search terms are followed by different characters.") {
-    char *test_name = "wildcard_search18";
+
+Test(base_output, wildcard_search06, .description="Perform a a wildcard prefix replacement over entire file. Search terms are followed by different characters.") {
+    char *test_name = "wildcard_search06";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-s *ster -r MANCHESTER -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s Manche* -r MANCHESTER -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search19, .description="Perform a wildcard suffix replacement over entire file. Input text contains a single word.") {
-    char *test_name = "wildcard_search19";
+Test(base_output, wildcard_search07, .description="Perform a a wildcard prefix replacement over entire file. Multiple occurences of the search text (at the beginning, in the middle, at the end).") {
+    char *test_name = "wildcard_search07";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-w -s Tur* -r \"TURING THE GREAT\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(base_output, wildcard_search08, .description="Perform a wildcard prefix replacement over entire file. Input text contains a single word.") {
+    char *test_name = "wildcard_search08";
     prep_files("oneword.txt", test_name);    
-    sprintf(args, "-w -s *ork -r \"This homework is effortless.\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s Hom* -r \"This homework is effortless.\" -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search20, .description="Perform a wildcard suffix replacement over entire file. Search term doesn't appear in the input file.") {
-    char *test_name = "wildcard_search20";
+Test(base_output, wildcard_search09, .description="Perform a wildcard prefix replacement over entire file. Search term doesn't appear in the input file.") {
+    char *test_name = "wildcard_search09";
     prep_files("unix.txt", test_name);    
-    sprintf(args, "-s *CSE -r \"Computer Science\" -w -l 1,45 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s CSE* -r \"Computer Science\" -w -l 1,45 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search21, .description="Perform a wildcard suffix replacement over entire file. No space after punctuation marks.") {
-    char *test_name = "wildcard_search21";
+Test(base_output, wildcard_search10, .description="Perform a wildcard prefix replacement over entire file. No space after punctuation marks.") {
+    char *test_name = "wildcard_search10";
     prep_files("punctuation.txt", test_name);    
-    sprintf(args, "-s *So -r \" Therefore,\" -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-w -s Bu* -r \" However,\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search22, .description="Perform a wildcard suffix replacement over input file. Search term is not always a suffix.") {
-    char *test_name = "wildcard_search22";
+Test(base_output, wildcard_search11, .description="Perform a wildcard prefix replacement in some lines. Search term is not a prefix.") {
+    char *test_name = "wildcard_search11";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-s *her -w -r HER %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s pal* -w -r \"all\" -l 30,44 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search23, .description="Perform a wildcard suffix replacement over entire file. Search text is a word itself.") {
-    char *test_name = "wildcard_search23";
+Test(base_output, wildcard_search12, .description="Perform a wildcard prefix replacement over entire file. Search text is a word itself.") {
+    char *test_name = "wildcard_search12";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-s *with -w -r WITH %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s with* -r WITH -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
 
-Test(base_output, wildcard_search24, .description="Perform a wildcard suffix replacement over some lines. Search term appears at EOF") {
-    char *test_name = "wildcard_search24";
-    prep_files("punctuation.txt", test_name);    
-    sprintf(args, "-s *ode -w -r \"CODE.\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-    run_using_system_no_valgrind(test_name, args);
-    expect_outfile_matches(test_name);
-}
+// Test(base_output, wildcard_search13, .description="Perform a wildcard suffix replacement over entire file. Terms have the same length.") {
+//     char *test_name = "wildcard_search13";
+//     prep_files("unix.txt", test_name);    
+//     sprintf(args, "-s *re -w -r \"New York\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search14, .description="Perform a wildcard suffix replacement over entire file. Terms have different lengths.") {
+//     char *test_name = "wildcard_search14";
+//     prep_files("turing.txt", test_name);    
+//     sprintf(args, "-w -s *ring -r TURING %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search15, .description="Perform a wildcard suffix replacement in a single line. Start line and end line are the same.") {
+//     char *test_name = "wildcard_search15";
+//     prep_files("turing.txt", test_name);    
+//     sprintf(args, "-s *chine -w -r device -l 23,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search16, .description="Perform a wildcard suffix replacement within the range. Search text appears outside the range as well.") {
+//     char *test_name = "wildcard_search16";
+//     prep_files("unix.txt", test_name);    
+//     sprintf(args, "-s *rly -w -r \"WELL TIMED\" -l 11,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search17, .description="Perform a wildcard suffix replacement within the specified range. Search term is followed by a punctuation mark.") {
+//     char *test_name = "wildcard_search17";
+//     prep_files("turing.txt", test_name);    
+//     sprintf(args, "-l 1,22 -s *gence -r wisdom -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search18, .description="Perform a a wildcard suffix replacement over entire file. Search terms are followed by different characters.") {
+//     char *test_name = "wildcard_search18";
+//     prep_files("turing.txt", test_name);    
+//     sprintf(args, "-s *ster -r MANCHESTER -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search19, .description="Perform a wildcard suffix replacement over entire file. Input text contains a single word.") {
+//     char *test_name = "wildcard_search19";
+//     prep_files("oneword.txt", test_name);    
+//     sprintf(args, "-w -s *ork -r \"This homework is effortless.\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search20, .description="Perform a wildcard suffix replacement over entire file. Search term doesn't appear in the input file.") {
+//     char *test_name = "wildcard_search20";
+//     prep_files("unix.txt", test_name);    
+//     sprintf(args, "-s *CSE -r \"Computer Science\" -w -l 1,45 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search21, .description="Perform a wildcard suffix replacement over entire file. No space after punctuation marks.") {
+//     char *test_name = "wildcard_search21";
+//     prep_files("punctuation.txt", test_name);    
+//     sprintf(args, "-s *So -r \" Therefore,\" -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search22, .description="Perform a wildcard suffix replacement over input file. Search term is not always a suffix.") {
+//     char *test_name = "wildcard_search22";
+//     prep_files("turing.txt", test_name);    
+//     sprintf(args, "-s *her -w -r HER %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search23, .description="Perform a wildcard suffix replacement over entire file. Search text is a word itself.") {
+//     char *test_name = "wildcard_search23";
+//     prep_files("turing.txt", test_name);    
+//     sprintf(args, "-s *with -w -r WITH %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
+
+// Test(base_output, wildcard_search24, .description="Perform a wildcard suffix replacement over some lines. Search term appears at EOF") {
+//     char *test_name = "wildcard_search24";
+//     prep_files("punctuation.txt", test_name);    
+//     sprintf(args, "-s *ode -w -r \"CODE.\" %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+//     run_using_system_no_valgrind(test_name, args);
+//     expect_outfile_matches(test_name);
+// }
 
 // /* Check memory usage. */
 // Test(base_valgrind, simple_search01) {
