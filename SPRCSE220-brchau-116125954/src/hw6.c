@@ -67,6 +67,8 @@ int main(int argc, char *argv[]) {
         prefix[length-1]='\0';
         prefixSearch(prefix,replaceString,input,output, startLine, endLine);
     }
+    fclose(input);
+    fclose(output);
     return 0;
 }
 
