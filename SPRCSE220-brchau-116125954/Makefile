@@ -11,13 +11,17 @@ TSTD := tests
 BLDD := build
 BIND := bin
 INCD += -I include
+STUDENT := student
 
 ALL_SRCF := $(shell find $(SRCD) -type f -name '*.c')
 ALL_OBJF := $(patsubst $(SRCD)/%,$(BLDD)/%,$(ALL_SRCF:.c=.o))
 TEST_SRC := $(shell find $(TSTD) -type f -name '*.c')
 TEST_OBJ := $(patsubst $(TSTD)/%,$(BLDD)/%,$(TEST_SRC:.c=.o))
+STUDENT_SRC := $(shell find $(STUDENT) -type f -name '*.c')
+STUDENT_OBJ := $(patsubst $(STUDENT)/%,$(BLDD)/%,$(STUDENT_SRC:.c=.o))
 
 TEST := unit_tests
+STUDENT_TEST := student_tests
 EXEC := hw6
 
 CFLAGS := -Wall -Wextra -Wshadow -Wdouble-promotion -Wformat=2 -Wundef -pedantic
@@ -49,7 +53,13 @@ setup:
 $(BIND)/$(TEST): $(ALL_OBJF) $(TEST_OBJ)
 	$(CC) $(FUNC_FILES) $(TEST_OBJ) $(INCD) $(TEST_LIB) $(LIBD) -o $@ $(LIBS)
 
+$(BIND)/$(STUDENT_TEST): $(ALL_OBJF) $(STUDENT_OBJ)
+	$(CC) $(FUNC_FILES) $(STUDENT_OBJ) $(INCD) $(TEST_LIB) $(LIBD) -o $@ $(LIBS)
+
 $(BLDD)/%.o: $(TSTD)/%.c
+	$(CC) $(CFLAGS) $(INCD) -c -o $@ $<
+
+$(BLDD)/%.o: $(STUDENT)/%.c
 	$(CC) $(CFLAGS) $(INCD) -c -o $@ $<
 
 $(BLDD)/%.o: $(SRCD)/%.c 
@@ -69,6 +79,16 @@ test:
 	@make bin/unit_tests
 	@make bin/hw6
 	@$(BIND)/$(TEST) --full-stats --verbose --json=$(TEST_RESULTS) -j1
+
+studentTests: 
+	@rm -fr $(TSTD).in
+	@mkdir -p $(TSTD).in
+	@rm -fr $(TSTD).out
+	@mkdir -p $(TSTD).out
+	@make setup
+	@make bin/student_tests
+	@make bin/hw6
+	@$(BIND)/$(STUDENT_TEST) --full-stats --verbose --json=$(TEST_RESULTS) -j1
 
 clean:
 	rm -fr $(BLDD) $(BIND) $(TSTD).in $(TSTD).out *.out $(TEST_RESULTS)

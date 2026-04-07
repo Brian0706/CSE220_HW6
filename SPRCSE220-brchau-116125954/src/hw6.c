@@ -104,8 +104,12 @@ int setup(int argc, char **argv, char **searchString,
                 if(*searchString != NULL){
                     return DUPLICATE_ARGUMENT;
                 }
-                else if(*optarg == '\0' || *optarg =='-'){
+                else if(*optarg == '\0'){
                     *searchString = "";
+                }
+                else if(*optarg =='-'){
+                    *replaceString = "";
+                    optind--;
                 }
                 else{
                     *searchString = optarg;
@@ -115,8 +119,12 @@ int setup(int argc, char **argv, char **searchString,
                 if(*replaceString != NULL){
                     return DUPLICATE_ARGUMENT;
                 }
-                else if(*optarg == '\0' || *optarg =='-'){
+                else if(*optarg == '\0'){
                     *replaceString = "";
+                }
+                else if(*optarg =='-'){
+                    *replaceString = "";
+                    optind--;
                 }
                 else{
                     *replaceString = optarg;
@@ -125,6 +133,14 @@ int setup(int argc, char **argv, char **searchString,
             case 'l':
                 if(*startLine != -1){
                     return DUPLICATE_ARGUMENT;
+                }
+                else if(optarg == '\0'){
+                    errorStatus = L_ARGUMENT_INVALID;
+                }
+                else if(*optarg =='-'){
+                    errorStatus = L_ARGUMENT_INVALID;
+                    optind--;
+                    break;
                 }
                 char larg[strlen(optarg) + 1];
                 strcpy(larg, optarg);
