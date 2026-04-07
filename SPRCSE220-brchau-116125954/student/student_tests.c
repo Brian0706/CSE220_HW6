@@ -59,6 +59,24 @@ void prep_files(char *orig_file, char *input_file) {
 static char args[ARGS_TEXT_LEN];
 
 TestSuite(invalid_args_test, .timeout=TEST_TIMEOUT); // return code to OS
+TestSuite(output_test, .timeout=TEST_TIMEOUT, .disabled=false);
+
+Test(output_test, simple_search01, .description="Perform a simple replacement over entire file.") {
+    char *test_name = "simple_student_search01";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-s ipsum -r DONE %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, simple_search02, .description="Perform a simple replacement over entire file. Extra flags should be ignored.") {
+    char *test_name = "simple_student_search02";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-s Lorem -r HELLO -h -g test %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
 
 Test(invalid_args_test, args_missing01, .description="Argument missing.") {
     char *test_name = "args_missing01";
@@ -86,7 +104,15 @@ Test(invalid_args_test, r_arg_missing01, .description="R argument missing, but i
 Test(invalid_args_test, input_arg_missing01, .description="Input File is Missing") {
     char *test_name = "input_arg_missing01";
     prep_files("unix.txt", test_name);  
-    sprintf(args, "-r -s test -l 1,10 %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-r -s test -l 1,10 %s/%s.out.txt", TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, INPUT_FILE_MISSING);
+}
+
+Test(invalid_args_test, input_arg_missing02, .description="Input File is Missing") {
+    char *test_name = "_input_arg_missing02";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r -s test -l 15,1 %s/.in.txt %s/%s.out.txt", TEST_INPUT_DIR, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, INPUT_FILE_MISSING);
 }
@@ -105,4 +131,92 @@ Test(invalid_args_test, output_file_unwritable02, .description="Output file is u
     sprintf(args, "-s the -r WOLFIE %s/%s.in.txt %s/out.txt", TEST_INPUT_DIR, test_name, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, OUTPUT_FILE_UNWRITABLE);
+}
+
+Test(invalid_args_tests, l_argument_invalid01, .description="l argument is invalid. Both negative line numbers.") {
+    char *test_name = "l_argument_invalid01";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l -10,-25 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid02, .description="l argument is invalid. One line number unparsable.") {
+    char *test_name = "l_argument_invalid02";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l hey,25 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid03, .description="l argument is invalid. Second line number unparsable.") {
+    char *test_name = "l_argument_invalid03";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l 10,hey %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid04, .description="l argument is invalid. Both line numbers unparsable.") {
+    char *test_name = "l_argument_invalid04";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l hey,there %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid05, .description="l argument is invalid. Only one line number.") {
+    char *test_name = "l_argument_invalid05";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l 10 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid06, .description="l argument is invalid. no line number.") {
+    char *test_name = "l_argument_invalid06";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-l -s bar -r test %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid07, .description="Start greater than end.") {
+    char *test_name = "l_argument_invalid07";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l 10,9 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, wildcard_invalid01, .description="Search text is two wildcard indicators.") {
+    char *test_name = "wildcard_invalid01";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s ** -r HELLO -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_tests, wildcard_invalid02, .description="Search text is missing.") {
+    char *test_name = "wildcard_invalid02";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, S_ARGUMENT_MISSING);
+}
+
+Test(invalid_args_tests, wildcard_invalid03, .description="Just a wildcard marker.") {
+    char *test_name = "wildcard_invalid03";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s * -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_tests, wildcard_invalid04, .description="No wildcard marker.") {
+    char *test_name = "wildcard_invalid04";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s a -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
 }

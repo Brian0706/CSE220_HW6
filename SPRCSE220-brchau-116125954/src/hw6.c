@@ -108,7 +108,7 @@ int setup(int argc, char **argv, char **searchString,
                     *searchString = "";
                 }
                 else if(*optarg =='-'){
-                    *replaceString = "";
+                    *searchString = "";
                     optind--;
                 }
                 else{
@@ -134,7 +134,7 @@ int setup(int argc, char **argv, char **searchString,
                 if(*startLine != -1){
                     return DUPLICATE_ARGUMENT;
                 }
-                else if(optarg == '\0'){
+                else if(*optarg == '\0'){
                     errorStatus = L_ARGUMENT_INVALID;
                 }
                 else if(*optarg =='-'){
