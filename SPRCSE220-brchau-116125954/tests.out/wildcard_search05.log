@@ -1,0 +1,13 @@
+==73749== Memcheck, a memory error detector
+==73749== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73749== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73749== Command: ./bin/hw6 -l 1,22 -s intel* -w -r wisdom tests.in/wildcard_search05.in.txt tests.out/wildcard_search05.out.txt
+==73749== 
+==73749== 
+==73749== HEAP SUMMARY:
+==73749==     in use at exit: 0 bytes in 0 blocks
+==73749==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==73749== 
+==73749== All heap blocks were freed -- no leaks are possible
+==73749== 
+==73749== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

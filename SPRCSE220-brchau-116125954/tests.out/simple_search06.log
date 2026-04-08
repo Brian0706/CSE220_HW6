@@ -1,0 +1,13 @@
+==73622== Memcheck, a memory error detector
+==73622== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73622== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73622== Command: ./bin/hw6 -s Turing -r TURING\ THE\ GREAT tests.in/simple_search06.in.txt tests.out/simple_search06.out.txt
+==73622== 
+==73622== 
+==73622== HEAP SUMMARY:
+==73622==     in use at exit: 0 bytes in 0 blocks
+==73622==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==73622== 
+==73622== All heap blocks were freed -- no leaks are possible
+==73622== 
+==73622== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

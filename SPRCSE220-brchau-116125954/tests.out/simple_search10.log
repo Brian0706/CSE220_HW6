@@ -1,0 +1,13 @@
+==73694== Memcheck, a memory error detector
+==73694== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73694== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73694== Command: ./bin/hw6 -s CSE -r Computer\ Science -l 1,45 tests.in/simple_search10.in.txt tests.out/simple_search10.out.txt
+==73694== 
+==73694== 
+==73694== HEAP SUMMARY:
+==73694==     in use at exit: 0 bytes in 0 blocks
+==73694==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==73694== 
+==73694== All heap blocks were freed -- no leaks are possible
+==73694== 
+==73694== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

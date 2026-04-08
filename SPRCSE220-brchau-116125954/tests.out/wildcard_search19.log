@@ -1,0 +1,13 @@
+==73946== Memcheck, a memory error detector
+==73946== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73946== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73946== Command: ./bin/hw6 -w -s *ork -r This\ homework\ is\ effortless. tests.in/wildcard_search19.in.txt tests.out/wildcard_search19.out.txt
+==73946== 
+==73946== 
+==73946== HEAP SUMMARY:
+==73946==     in use at exit: 0 bytes in 0 blocks
+==73946==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==73946== 
+==73946== All heap blocks were freed -- no leaks are possible
+==73946== 
+==73946== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,13 @@
+==73647== Memcheck, a memory error detector
+==73647== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73647== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73647== Command: ./bin/hw6 -s Manchester -r MANCHESTER tests.in/simple_search07.in.txt tests.out/simple_search07.out.txt
+==73647== 
+==73647== 
+==73647== HEAP SUMMARY:
+==73647==     in use at exit: 0 bytes in 0 blocks
+==73647==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==73647== 
+==73647== All heap blocks were freed -- no leaks are possible
+==73647== 
+==73647== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

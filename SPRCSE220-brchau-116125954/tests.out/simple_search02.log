@@ -1,0 +1,13 @@
+==73566== Memcheck, a memory error detector
+==73566== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73566== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73566== Command: ./bin/hw6 -s machine -r device -l 23,23 tests.in/simple_search02.in.txt tests.out/simple_search02.out.txt
+==73566== 
+==73566== 
+==73566== HEAP SUMMARY:
+==73566==     in use at exit: 0 bytes in 0 blocks
+==73566==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==73566== 
+==73566== All heap blocks were freed -- no leaks are possible
+==73566== 
+==73566== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

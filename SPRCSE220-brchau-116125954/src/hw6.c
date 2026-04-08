@@ -17,6 +17,8 @@ int replaceAString(char*, FILE*, char*);
 
 int printToOutput(char*, FILE*);
 
+int testForErrors(FILE* , FILE*);
+
 /*Checks if s2 is a suffix of s1*/
 BOOL isSuffix(const char*, const char*);
 
@@ -181,7 +183,7 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     int lineNumber = 1;
     while((readChar=fgetc(input)) != EOF){
         if(readChar == '\n'){
-            if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
+            if(strlen(testString) != 0 && printToOutput(testString, output)){
                 free(testString);
                 return FAILED_WRITE;
             }
@@ -223,15 +225,10 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             return FAILED_WRITE;
         }
     }
-    if(ferror(input)){
-        free(testString);
+    free(testString);
+    if(testForErrors(input,output)){
         return -1;
     }
-    if(ferror(output)){
-        free(testString);
-        return -2;
-    }
-    free(testString);
     return 0;
 }
 
@@ -248,7 +245,7 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
                     return FAILED_WRITE;
                 }
             }
-            else if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
+            else if(strlen(testString) != 0 && printToOutput(testString, output)){
                 free(testString);
                 return FAILED_WRITE;
             }
@@ -303,15 +300,10 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             }
         }
     }
-    if(ferror(input)){
-        free(testString);
+    free(testString);
+    if(testForErrors(input,output)){
         return -1;
     }
-    if(ferror(output)){
-        free(testString);
-        return -2;
-    }
-    free(testString);
     return 0;
 }
 
@@ -326,7 +318,7 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             if(isPrefix(testString, searchString) && replaceAString(replaceString, output, testString)){
                 return FAILED_WRITE;
             }
-            else if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
+            else if(strlen(testString) != 0 && printToOutput(testString, output)){
                 free(testString);
                 return FAILED_WRITE;
             }
@@ -381,15 +373,10 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             }
         }
     }
-    if(ferror(input)){
-        free(testString);
+    free(testString);
+    if(testForErrors(input,output)){
         return -1;
     }
-    if(ferror(output)){
-        free(testString);
-        return -2;
-    }
-    free(testString);
     return 0;
 }
 
@@ -432,3 +419,11 @@ int printToOutput(char* testString, FILE* output){
     }
     return 0;
 }
+
+int testForErrors(FILE* input , FILE* output){
+    if(ferror(input) || ferror(output)){
+        return -1;
+    }
+    return 0;
+}
+

@@ -1,0 +1,13 @@
+==73993== Memcheck, a memory error detector
+==73993== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73993== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73993== Command: ./bin/hw6 -s *her -w -r HER tests.in/wildcard_search22.in.txt tests.out/wildcard_search22.out.txt
+==73993== 
+==73993== 
+==73993== HEAP SUMMARY:
+==73993==     in use at exit: 0 bytes in 0 blocks
+==73993==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==73993== 
+==73993== All heap blocks were freed -- no leaks are possible
+==73993== 
+==73993== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
