@@ -46,21 +46,28 @@ int main(int argc, char *argv[]) {
         return INPUT_FILE_MISSING;
     }
     else if((output = fopen(outputFile, "w")) == NULL){
+        fclose(input);
         return OUTPUT_FILE_UNWRITABLE;
     }
     else if(searchString == NULL || *searchString == '\0'){
-        return S_ARGUMENT_MISSING;
+        result = S_ARGUMENT_MISSING;
     }
     else if(replaceString == NULL || *replaceString == '\0'){
-        return R_ARGUMENT_MISSING;
+        result = R_ARGUMENT_MISSING;
     }
     else if(result == L_ARGUMENT_INVALID){
-        return result;
+        /*Result is already L_ARGUMENT_INVALID*/
+        ;
     }
     else if(wildcardEnabled && ((*searchString != '*') ==(*(searchString + strlen(searchString) - 1) != '*'))){
-        return WILDCARD_INVALID;
+        result = WILDCARD_INVALID;
     }
-    if(!wildcardEnabled){
+    if(result){
+        fclose(input);
+        fclose(output);
+        return result;
+    }
+    else if(!wildcardEnabled){
         simpleSearch(searchString,replaceString,input,output, startLine, endLine);
     }
     else if(*searchString == '*'){
@@ -89,7 +96,6 @@ int setup(int argc, char **argv, char **searchString,
     while((opt = getopt(argc, argv, ":ws:r:l:")) != -1){
         switch(opt){
             case ':':
-                printf("Caught Empty\n");
                 switch(optopt){
                     case 's':
                         *searchString = "";
@@ -184,7 +190,7 @@ int simpleSearch(const char* searchString, const char* replaceString, FILE* inpu
         * If so, add the beginning letter and move over all letters by one, then add the new character 
         */
         int stringLength = strlen(testString);
-        if(stringLength >= MAX_SEARCH_LEN - 1){
+        if(stringLength >= MAX_SEARCH_LEN){
             char charToAdd = *testString;
             if(fputc(charToAdd, output) == EOF){
                 free(testString);
@@ -242,7 +248,7 @@ int wildCardSearch(const char* searchString, const char* replaceString, FILE* in
         /*If the char is a newline, this means that the end of the line has been found*/
         if(readChar == '\n'){
             /*Check if string should be replaced in output file*/
-            if(searchMode(testString, searchString)){
+            if(((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)) && searchMode(testString, searchString)){
                 /*Write the replacement string to outline file, if it fails, exit immediately*/
                 if(replaceAString(replaceString, output, testString)){
                     return FAILED_WRITE;
