@@ -7,17 +7,17 @@ typedef enum {FALSE, TRUE} BOOL;
 
 int setup(int, char**, char**, char**, int*, int*, BOOL*);
 
-int simpleSearch(char*, char*, FILE*, FILE*, int, int);
+int simpleSearch(const char*, const char*, FILE*, FILE*, int, int);
 
-int suffixSearch(char*, char*, FILE*, FILE*, int, int);
+int wildCardSearch(const char*, const char*, FILE*, FILE*, int, int, BOOL (*) (const char*, const char*));
 
-int prefixSearch(char*, char*, FILE*, FILE*, int, int);
-
-int replaceAString(char*, FILE*, char*);
+int replaceAString(const char*, FILE*, char*);
 
 int printToOutput(char*, FILE*);
 
 int testForErrors(FILE* , FILE*);
+
+int argToString(char**, char*, int*);
 
 /*Checks if s2 is a suffix of s1*/
 BOOL isSuffix(const char*, const char*);
@@ -64,14 +64,16 @@ int main(int argc, char *argv[]) {
         simpleSearch(searchString,replaceString,input,output, startLine, endLine);
     }
     else if(*searchString == '*'){
-        suffixSearch((searchString + 1),replaceString,input,output, startLine, endLine);
+        BOOL (*searchMode) (const char*, const char*) = isSuffix;
+        wildCardSearch((searchString + 1),replaceString,input,output, startLine, endLine, searchMode);
     }
     else{
         size_t length = strlen(searchString);
         char prefix[length];
         strncpy(prefix, searchString, length-1);
         prefix[length-1]='\0';
-        prefixSearch(prefix,replaceString,input,output, startLine, endLine);
+        BOOL (*searchMode) (const char*, const char*) = isPrefix;
+        wildCardSearch(prefix,replaceString,input,output, startLine, endLine, searchMode);
     }
     fclose(input);
     fclose(output);
@@ -107,33 +109,13 @@ int setup(int argc, char **argv, char **searchString,
                 *wildcardEnabled = TRUE;
                 break;
             case 's':
-                if(*searchString != NULL){
+                if(argToString(searchString, optarg, &optind)){
                     return DUPLICATE_ARGUMENT;
-                }
-                else if(*optarg == '\0'){
-                    *searchString = "";
-                }
-                else if(*optarg =='-'){
-                    *searchString = "";
-                    optind--;
-                }
-                else{
-                    *searchString = optarg;
                 }
                 break;
             case 'r':
-                if(*replaceString != NULL){
+                if(argToString(replaceString, optarg, &optind)){
                     return DUPLICATE_ARGUMENT;
-                }
-                else if(*optarg == '\0'){
-                    *replaceString = "";
-                }
-                else if(*optarg =='-'){
-                    *replaceString = "";
-                    optind--;
-                }
-                else{
-                    *replaceString = optarg;
                 }
                 break;
             case 'l':
@@ -175,23 +157,32 @@ int setup(int argc, char **argv, char **searchString,
     return errorStatus;
 }
 
-int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* output, int start, int end){
+int simpleSearch(const char* searchString, const char* replaceString, FILE* input, FILE* output, int start, int end){
     char *testString = (char *) malloc(MAX_SEARCH_LEN + 1);
     *testString='\0';
     char readChar;
     char* searchTest;
     int lineNumber = 1;
     while((readChar=fgetc(input)) != EOF){
+        /*If the char is a newline, this means that the end of the line has been found*/
         if(readChar == '\n'){
+            /*Since word is checked every loop, no need to check just write testString to file*/
             if(strlen(testString) != 0 && printToOutput(testString, output)){
                 free(testString);
                 return FAILED_WRITE;
             }
-            fputc('\n', output);
+            /*Write newline to output file*/
+            if(fputc('\n', output) == EOF){
+                return FAILED_WRITE;
+            }
+            /*Increment the line counter*/
             lineNumber++;
             *testString = '\0';
             continue;
         }
+        /*Checks if testString is at its max size
+        * If so, add the beginning letter and move over all letters by one, then add the new character 
+        */
         int stringLength = strlen(testString);
         if(stringLength >= MAX_SEARCH_LEN - 1){
             char charToAdd = *testString;
@@ -203,11 +194,17 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
         }
         *(testString + stringLength) = readChar;
         *(testString + stringLength + 1) = '\0';
+        /*Checks if word is within the range of lines to be replaced*/
         if((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)){
+            /*Check if searchString is in testString*/
             searchTest = strstr(testString, searchString);
             if(searchTest){
+                /*Get all the letters before and after the searchString in testString*/
                 size_t beforeSearch = searchTest - testString;
                 int remainingChars = strlen(testString) - beforeSearch-(strlen(searchString));
+                /*Write the part of testString before the searchString
+                * Then write in the replacement string
+                */
                 if(fwrite(testString, sizeof(char),beforeSearch, output) != beforeSearch){
                     free(testString);
                     return FAILED_WRITE;
@@ -215,48 +212,62 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
                 if(replaceAString(replaceString, output, testString)){
                     return FAILED_WRITE;
                 }
+                /*Just move up everything else rather than writing to file
+                * Because remaining chars could be part of another string to replace
+                */
                 memmove(testString,searchTest + strlen(searchString),remainingChars);
                 *(testString + remainingChars) = '\0';
             }
         }
     }
-    if(strlen(testString) != 0){
-        if(printToOutput(testString, output)){
-            return FAILED_WRITE;
-        }
+    /*Do one last write to write to output anything left*/
+    if(printToOutput(testString, output)){
+        return FAILED_WRITE;
     }
     free(testString);
+    /*Check for any errors with file pointers*/
     if(testForErrors(input,output)){
         return -1;
     }
     return 0;
 }
 
-/*Searchs for and replaces a word that has the suffix of searchString*/
-int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* output, int start, int end){
+/*Searchs for and replaces a word that has the suffix or prefix of searchString depending on searchMode*/
+int wildCardSearch(const char* searchString, const char* replaceString, FILE* input, FILE* output, int start, int end, BOOL (*searchMode) (const char*, const char*)){
     char *testString = (char *) malloc(MAX_LINE + 1);
     *testString='\0';
     char readChar;
     int lineNumber = 1;
     while((readChar=fgetc(input)) != EOF){
+        /*If the char is a newline, this means that the end of the line has been found*/
         if(readChar == '\n'){
-            if(isSuffix(testString, searchString)){
+            /*Check if string should be replaced in output file*/
+            if(searchMode(testString, searchString)){
+                /*Write the replacement string to outline file, if it fails, exit immediately*/
                 if(replaceAString(replaceString, output, testString)){
                     return FAILED_WRITE;
                 }
             }
+            /*Write the test string to outline file, if it fails, exit immediately*/
             else if(strlen(testString) != 0 && printToOutput(testString, output)){
                 free(testString);
                 return FAILED_WRITE;
             }
-            fputc('\n', output);
+            /*Adds the newline to the file and then increment the line counter.*/
+            if(fputc('\n', output) == EOF){
+                return FAILED_WRITE;
+            }
             lineNumber++;
+            /*Set the beginning of the array to the null terminator to indicate an empty string*/
             *testString = '\0';
             continue;
         }
+        /*Checks if the word has been ended*/
         else if(ispunct(readChar) || isspace(readChar)){
+            /*Checks if word is within the range of lines to be replaced*/
             if((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)){
-                if(isSuffix(testString, searchString)){
+                /*Same process as with newline*/
+                if(searchMode(testString, searchString)){
                     if(replaceAString(replaceString, output, testString)){
                         return FAILED_WRITE;
                     }
@@ -267,15 +278,21 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
                     }
                 }
             }
+            /*If not in range, just write testString to output*/
             else{
                 if(printToOutput(testString, output)){
                     return FAILED_WRITE;
                 }
             }
-            fputc(readChar, output);
+            if(fputc(readChar, output) == EOF){
+                return FAILED_WRITE;
+            }
             *testString = '\0';
             continue;
         }
+        /*Checks if testString is at its max size
+        * If so, add the beginning letter and move over all letters by one, then add the new character 
+        */
         int stringLength = strlen(testString);
         if(stringLength >= MAX_LINE - 1){
             char charToAdd = *testString;
@@ -288,8 +305,9 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
         *(testString + stringLength) = readChar;
         *(testString + stringLength + 1) = '\0';
     }
+    /*Do one last check on the testString to check for anything left*/
     if(strlen(testString) != 0){
-        if(isSuffix(testString, searchString)){
+        if(((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)) && searchMode(testString, searchString)){
             if(replaceAString(replaceString, output, testString)){
                 return FAILED_WRITE;
             }
@@ -301,88 +319,19 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
         }
     }
     free(testString);
+    /*Check for any errors with file pointers*/
     if(testForErrors(input,output)){
         return -1;
     }
     return 0;
 }
 
-/*Searchs for and replaces a word that has the prefix of searchString*/
-int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* output, int start, int end){
-    char *testString = (char *) malloc(MAX_LINE + 1);
-    *testString='\0';
-    char readChar;
-    int lineNumber = 1;
-    while((readChar=fgetc(input)) != EOF){
-        if(readChar == '\n'){
-            if(isPrefix(testString, searchString) && replaceAString(replaceString, output, testString)){
-                return FAILED_WRITE;
-            }
-            else if(strlen(testString) != 0 && printToOutput(testString, output)){
-                free(testString);
-                return FAILED_WRITE;
-            }
-            fputc('\n', output);
-            lineNumber++;
-            *testString = '\0';
-            continue;
-        }
-        else if(ispunct(readChar) || isspace(readChar)){
-            if((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)){
-                if(isPrefix(testString, searchString)){
-                    if(replaceAString(replaceString, output, testString)){
-                        return FAILED_WRITE;
-                    }
-                }
-                else{
-                    if(printToOutput(testString, output)){
-                        return FAILED_WRITE;
-                    }
-                }
-            }
-            else{
-                if(printToOutput(testString, output)){
-                    return FAILED_WRITE;
-                }
-            }
-            fputc(readChar, output);
-            *testString = '\0';
-            continue;
-        }
-        int stringLength = strlen(testString);
-        if(stringLength >= MAX_LINE - 1){
-            char charToAdd = *testString;
-            if(fputc(charToAdd, output) == EOF){
-                free(testString);
-                return FAILED_WRITE;
-            }
-            memmove(testString,testString+1,stringLength--);
-        }
-        *(testString + stringLength) = readChar;
-        *(testString + stringLength + 1) = '\0';
-    }
-    if(strlen(testString) != 0){
-        if(isPrefix(testString, searchString)){
-            if(replaceAString(replaceString, output, testString)){
-                return FAILED_WRITE;
-            }
-        }
-        else{
-            if(printToOutput(testString, output)){
-                return FAILED_WRITE;
-            }
-        }
-    }
-    free(testString);
-    if(testForErrors(input,output)){
-        return -1;
-    }
-    return 0;
-}
-
+/*Helper functions are implemented here*/
+/*Finds if s2 is a suffix of s1*/
 BOOL isSuffix(const char* s1, const char* s2){
     int size1 = strlen(s1);
     int size2 = strlen(s2);
+    /*s2 can't be a suffix if it is bigger than s1*/
     if(size1 < size2){
         return FALSE;
     }
@@ -392,9 +341,11 @@ BOOL isSuffix(const char* s1, const char* s2){
     return TRUE;
 }
 
+/*Finds if s2 is a prefix of s1*/
 BOOL isPrefix(const char* s1, const char* s2){
     int size1 = strlen(s1);
     int size2 = strlen(s2);
+    /*s2 can't be a suffix if it is bigger than s1*/
     if(size1 < size2){
         return FALSE;
     }
@@ -404,22 +355,27 @@ BOOL isPrefix(const char* s1, const char* s2){
     return TRUE;
 }
 
-int replaceAString(char *replaceString, FILE* output, char* testString){
+/*Writes the replacement string to the file*/
+int replaceAString(const char *replaceString, FILE* output, char* testString){
     if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
+        /*If write fails, free the testString and then abort*/
         free(testString);
         return FAILED_WRITE;
     }
     return 0;
 }
 
+/*Writes the testString to the file*/
 int printToOutput(char* testString, FILE* output){
     if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
+        /*If write fails, free the testString and then abort*/
         free(testString);
         return FAILED_WRITE;
     }
     return 0;
 }
 
+/*Tests the file pointers to see if they have encountered errors*/
 int testForErrors(FILE* input , FILE* output){
     if(ferror(input) || ferror(output)){
         return -1;
@@ -427,3 +383,25 @@ int testForErrors(FILE* input , FILE* output){
     return 0;
 }
 
+/*Takes the argument provided by optarg and assigns it to dest*/
+int argToString(char** dest, char* optarg, int* optind){
+    /*Checks if the argument has already been provided*/
+    if(*dest != NULL){
+        return DUPLICATE_ARGUMENT;
+    }
+    /*Checks for an argument of empty string*/
+    else if(*optarg == '\0'){
+        *dest = "";
+    }
+    /*Checks if the argument is actually just a flag*/
+    else if(*optarg =='-'){
+        *dest = "";
+        /*Ensures that the flag in front is read rather than just skipped over*/
+        (*optind)--;
+    }
+    else{
+        /*If all is good, have dest point to the argument*/
+        *dest = optarg;
+    }
+    return 0;
+}

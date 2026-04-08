@@ -654,6 +654,23 @@ Test(invalid_args_tests, l_argument_invalid07, .description="Start greater than 
     expect_error_exit(status, L_ARGUMENT_INVALID);
 }
 
+Test(invalid_args_tests, l_argument_invalid08, .description="Invalid argument has a number in it.") {
+    char *test_name = "l_argument_invalid08";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l hey9,10 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+Test(invalid_args_tests, l_argument_invalid10, .description="Two numbers seperated by a lot of commas.") {
+    char *test_name = "l_argument_invalid10";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l 9,,,,,,,,,-10 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+
 Test(invalid_args_tests, wildcard_invalid01, .description="Search text is two wildcard indicators.") {
     char *test_name = "wildcard_invalid01";
     prep_files("unix.txt", test_name);    
