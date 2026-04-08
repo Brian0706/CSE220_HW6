@@ -242,7 +242,13 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     int lineNumber = 1;
     while((readChar=fgetc(input)) != EOF){
         if(readChar == '\n'){
-            if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
+            if(isSuffix(testString, searchString)){
+                if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
+                    free(testString);
+                    return -3;
+                }
+            }
+            else if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
                 free(testString);
                 return -3;
             }
@@ -322,7 +328,13 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     int lineNumber = 1;
     while((readChar=fgetc(input)) != EOF){
         if(readChar == '\n'){
-            if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
+            if(isPrefix(testString, searchString)){
+                if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
+                    free(testString);
+                    return -3;
+                }
+            }
+            else if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
                 free(testString);
                 return -3;
             }
