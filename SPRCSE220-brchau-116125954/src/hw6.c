@@ -13,6 +13,10 @@ int suffixSearch(char*, char*, FILE*, FILE*, int, int);
 
 int prefixSearch(char*, char*, FILE*, FILE*, int, int);
 
+int replaceAString(char*, FILE*, char*);
+
+int printToOutput(char*, FILE*);
+
 /*Checks if s2 is a suffix of s1*/
 BOOL isSuffix(const char*, const char*);
 
@@ -178,9 +182,8 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     while((readChar=fgetc(input)) != EOF){
         if(readChar == '\n'){
             if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
-                lineNumber++;
                 free(testString);
-                return -3;
+                return FAILED_WRITE;
             }
             fputc('\n', output);
             lineNumber++;
@@ -192,7 +195,7 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             char charToAdd = *testString;
             if(fputc(charToAdd, output) == EOF){
                 free(testString);
-                return -3;
+                return FAILED_WRITE;
             }
             memmove(testString,testString+1,stringLength--);
         }
@@ -205,11 +208,10 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
                 int remainingChars = strlen(testString) - beforeSearch-(strlen(searchString));
                 if(fwrite(testString, sizeof(char),beforeSearch, output) != beforeSearch){
                     free(testString);
-                    return -3;
+                    return FAILED_WRITE;
                 }
-                if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                    free(testString);
-                    return -3;
+                if(replaceAString(replaceString, output, testString)){
+                    return FAILED_WRITE;
                 }
                 memmove(testString,searchTest + strlen(searchString),remainingChars);
                 *(testString + remainingChars) = '\0';
@@ -217,9 +219,8 @@ int simpleSearch(char* searchString, char* replaceString, FILE* input, FILE* out
         }
     }
     if(strlen(testString) != 0){
-        if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-            free(testString);
-            return -3;
+        if(printToOutput(testString, output)){
+            return FAILED_WRITE;
         }
     }
     if(ferror(input)){
@@ -243,14 +244,13 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     while((readChar=fgetc(input)) != EOF){
         if(readChar == '\n'){
             if(isSuffix(testString, searchString)){
-                if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                    free(testString);
-                    return -3;
+                if(replaceAString(replaceString, output, testString)){
+                    return FAILED_WRITE;
                 }
             }
             else if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
                 free(testString);
-                return -3;
+                return FAILED_WRITE;
             }
             fputc('\n', output);
             lineNumber++;
@@ -260,22 +260,19 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
         else if(ispunct(readChar) || isspace(readChar)){
             if((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)){
                 if(isSuffix(testString, searchString)){
-                    if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                        free(testString);
-                        return -3;
+                    if(replaceAString(replaceString, output, testString)){
+                        return FAILED_WRITE;
                     }
                 }
                 else{
-                    if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-                        free(testString);
-                        return -3;
+                    if(printToOutput(testString, output)){
+                        return FAILED_WRITE;
                     }
                 }
             }
             else{
-                if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-                    free(testString);
-                    return -3;
+                if(printToOutput(testString, output)){
+                    return FAILED_WRITE;
                 }
             }
             fputc(readChar, output);
@@ -287,7 +284,7 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             char charToAdd = *testString;
             if(fputc(charToAdd, output) == EOF){
                 free(testString);
-                return -3;
+                return FAILED_WRITE;
             }
             memmove(testString,testString+1,stringLength--);
         }
@@ -296,15 +293,13 @@ int suffixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     }
     if(strlen(testString) != 0){
         if(isSuffix(testString, searchString)){
-            if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                free(testString);
-                return -3;
+            if(replaceAString(replaceString, output, testString)){
+                return FAILED_WRITE;
             }
         }
         else{
-            if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-                free(testString);
-                return -3;
+            if(printToOutput(testString, output)){
+                return FAILED_WRITE;
             }
         }
     }
@@ -328,15 +323,12 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     int lineNumber = 1;
     while((readChar=fgetc(input)) != EOF){
         if(readChar == '\n'){
-            if(isPrefix(testString, searchString)){
-                if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                    free(testString);
-                    return -3;
-                }
+            if(isPrefix(testString, searchString) && replaceAString(replaceString, output, testString)){
+                return FAILED_WRITE;
             }
             else if(strlen(testString) != 0 && (fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString))){
                 free(testString);
-                return -3;
+                return FAILED_WRITE;
             }
             fputc('\n', output);
             lineNumber++;
@@ -346,22 +338,19 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
         else if(ispunct(readChar) || isspace(readChar)){
             if((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)){
                 if(isPrefix(testString, searchString)){
-                    if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                        free(testString);
-                        return -3;
+                    if(replaceAString(replaceString, output, testString)){
+                        return FAILED_WRITE;
                     }
                 }
                 else{
-                    if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-                        free(testString);
-                        return -3;
+                    if(printToOutput(testString, output)){
+                        return FAILED_WRITE;
                     }
                 }
             }
             else{
-                if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-                    free(testString);
-                    return -3;
+                if(printToOutput(testString, output)){
+                    return FAILED_WRITE;
                 }
             }
             fputc(readChar, output);
@@ -373,7 +362,7 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
             char charToAdd = *testString;
             if(fputc(charToAdd, output) == EOF){
                 free(testString);
-                return -3;
+                return FAILED_WRITE;
             }
             memmove(testString,testString+1,stringLength--);
         }
@@ -382,15 +371,13 @@ int prefixSearch(char* searchString, char* replaceString, FILE* input, FILE* out
     }
     if(strlen(testString) != 0){
         if(isPrefix(testString, searchString)){
-            if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
-                free(testString);
-                return -3;
+            if(replaceAString(replaceString, output, testString)){
+                return FAILED_WRITE;
             }
         }
         else{
-            if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
-                free(testString);
-                return -3;
+            if(printToOutput(testString, output)){
+                return FAILED_WRITE;
             }
         }
     }
@@ -428,4 +415,20 @@ BOOL isPrefix(const char* s1, const char* s2){
         return FALSE;
     }
     return TRUE;
+}
+
+int replaceAString(char *replaceString, FILE* output, char* testString){
+    if(fwrite(replaceString, sizeof(char),strlen(replaceString),output) != strlen(replaceString)){
+        free(testString);
+        return FAILED_WRITE;
+    }
+    return 0;
+}
+
+int printToOutput(char* testString, FILE* output){
+    if(fwrite(testString, sizeof(char),strlen(testString),output) != strlen(testString)){
+        free(testString);
+        return FAILED_WRITE;
+    }
+    return 0;
 }
