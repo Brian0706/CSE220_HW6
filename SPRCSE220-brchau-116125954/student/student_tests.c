@@ -676,7 +676,7 @@ Test(valgrind_test, wildcard_search24, .description="Perform a wildcard suffix r
     expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
-Test(output_test, wildcard_search25, .description="Perform a wildcard prefix replacement over some lines. Prefix is one letter.") {
+Test(valgrind_test, wildcard_search25, .description="Perform a wildcard prefix replacement over some lines. Prefix is one letter.") {
     char *test_name = "wildcard_student_search25";
     prep_files("rome.txt", test_name);    
     sprintf(args, "-w -r PUPPY -s p* -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
