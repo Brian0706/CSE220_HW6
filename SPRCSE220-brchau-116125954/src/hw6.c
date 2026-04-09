@@ -44,6 +44,9 @@ int main(int argc, char *argv[]) {
     FILE *output;
     int result = setup(argc, argv, &searchString, &replaceString,
                         &startLine,&endLine,&wildcardEnabled);
+    /*Go through the error code sequentialy ensuring they are
+    * returned in the right order.
+    */
     if(result == DUPLICATE_ARGUMENT){
         return result;
     }
