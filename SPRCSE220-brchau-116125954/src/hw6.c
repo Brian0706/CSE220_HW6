@@ -144,7 +144,7 @@ int setup(int argc, char **argv, char **searchString,
                     break;
                 }
                 *startLine = strtol(token, &endPtr, 10);
-                if(endPtr == token || *endPtr != '\0'||*startLine < 0){
+                if(endPtr == token || *endPtr != '\0'||*startLine < 1){
                     errorStatus = L_ARGUMENT_INVALID;
                     break;
                 }
