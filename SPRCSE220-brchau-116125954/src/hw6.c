@@ -174,10 +174,12 @@ int setup(int argc, char **argv, char **searchString,
 int simpleSearch(const char* searchString, const char* replaceString, FILE* input, FILE* output, int start, int end){
     char *testString = (char *) malloc(MAX_SEARCH_LEN + 1);
     *testString='\0';
+    int readValue;
     char readChar;
     char* searchTest;
     int lineNumber = 1;
-    while((readChar=fgetc(input)) != EOF){
+    while((readValue=fgetc(input)) != EOF){
+        readChar = (char) readValue;
         /*If the char is a newline, this means that the end of the line has been found*/
         if(readChar == '\n'){
             /*Since word is checked every loop, no need to check just write testString to file*/
@@ -250,9 +252,11 @@ int simpleSearch(const char* searchString, const char* replaceString, FILE* inpu
 int wildCardSearch(const char* searchString, const char* replaceString, FILE* input, FILE* output, int start, int end, BOOL (*searchMode) (const char*, const char*)){
     char *testString = (char *) malloc(MAX_LINE + 1);
     *testString='\0';
+    int readValue;
     char readChar;
     int lineNumber = 1;
-    while((readChar=fgetc(input)) != EOF){
+    while((readValue=fgetc(input)) != EOF){
+        readChar = (char) readValue;
         /*If the char is a newline, this means that the end of the line has been found*/
         if(readChar == '\n'){
             /*Check if string should be replaced in output file*/
