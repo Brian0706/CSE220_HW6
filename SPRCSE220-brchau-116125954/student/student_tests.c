@@ -679,7 +679,7 @@ Test(invalid_args_test, output_file_unwritable01, .description="Output file is u
     expect_error_exit(status, OUTPUT_FILE_UNWRITABLE);
 }
 
-Test(invalid_args_test, output_file_missing02, .description="Output file is missing.") {
+Test(invalid_args_test, output_file_unwritable02, .description="Output file is missing.") {
     char *test_name = "output_file_unwritable02"; 
     prep_files("unix.txt", test_name);    
     sprintf(args, "-s the -r WOLFIE %s/%s.in.txt %s/out.txt", TEST_INPUT_DIR, test_name, test_name);

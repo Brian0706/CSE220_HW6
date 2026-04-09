@@ -174,11 +174,11 @@ int simpleSearch(const char* searchString, const char* replaceString, FILE* inpu
         if(readChar == '\n'){
             /*Since word is checked every loop, no need to check just write testString to file*/
             if(strlen(testString) != 0 && printToOutput(testString, output)){
-                free(testString);
                 return FAILED_WRITE;
             }
             /*Write newline to output file*/
             if(fputc('\n', output) == EOF){
+                free(testString);
                 return FAILED_WRITE;
             }
             /*Increment the line counter*/
@@ -261,6 +261,7 @@ int wildCardSearch(const char* searchString, const char* replaceString, FILE* in
             }
             /*Adds the newline to the file and then increment the line counter.*/
             if(fputc('\n', output) == EOF){
+                free(testString);
                 return FAILED_WRITE;
             }
             lineNumber++;
@@ -291,6 +292,7 @@ int wildCardSearch(const char* searchString, const char* replaceString, FILE* in
                 }
             }
             if(fputc(readChar, output) == EOF){
+                free(testString);
                 return FAILED_WRITE;
             }
             *testString = '\0';
