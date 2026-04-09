@@ -257,12 +257,12 @@ int wildCardSearch(const char* searchString, const char* replaceString, FILE* in
         if(readChar == '\n'){
             /*Check if string should be replaced in output file*/
             if(((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)) && searchMode(testString, searchString)){
-                /*Write the replacement string to outline file, if it fails, exit immediately*/
+                /*Write the replacement string to output file, if it fails, exit immediately*/
                 if(replaceAString(replaceString, output, testString)){
                     return FAILED_WRITE;
                 }
             }
-            /*Write the test string to outline file, if it fails, exit immediately*/
+            /*Write the test string to output file, if it fails, exit immediately*/
             else if(strlen(testString) != 0 && printToOutput(testString, output)){
                 return FAILED_WRITE;
             }
