@@ -410,8 +410,7 @@ Test(valgrind_test, simple_search10, .description="Perform a simple replacement 
     char *test_name = "simple_student_search10";
     prep_files("rome.txt", test_name);    
     sprintf(args, "-s Remus -r 1234_ test %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-    run_using_system_no_valgrind(test_name, args);
-    expect_outfile_matches(test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
 Test(valgrind_test, simple_search11, .description="Perform a simple replacement with a different order") {
