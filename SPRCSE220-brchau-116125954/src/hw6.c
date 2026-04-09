@@ -281,7 +281,10 @@ int wildCardSearch(const char* searchString, const char* replaceString, FILE* in
             continue;
         }
         /*Checks if the word has been ended*/
-        else if(ispunct(readChar) || isspace(readChar)){
+        /*readChar is typecasted as functions are undefined when 
+        * charactesr are negative values.
+        */
+        else if(ispunct((unsigned char) readChar) || isspace((unsigned char) readChar)){
             /*Checks if word is within the range of lines to be replaced*/
             if((lineNumber >= start && lineNumber <= end) || (start == -1 && end == -1)){
                 /*Same process as with newline*/
