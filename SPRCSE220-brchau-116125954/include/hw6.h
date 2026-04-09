@@ -1,3 +1,8 @@
+/*
+    Name: Brian Chau
+    SBU ID: 116125954
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

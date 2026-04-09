@@ -3,6 +3,11 @@ DO NOT CHANGE THE CONTENTS OF THIS FILE IN CASE A NEW VERSION IS DISTRIBUTED.
 PUT YOUR OWN TEST CASES IN student_tests.c
 */
 
+/*
+    Name: Brian Chau
+    SBU ID: 116125954
+*/
+
 #include "unit_tests.h"
 #include "hw6.h"
  

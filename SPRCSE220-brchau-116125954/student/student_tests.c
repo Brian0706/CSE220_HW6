@@ -1,3 +1,8 @@
+/*
+    Name: Brian Chau
+    SBU ID: 116125954
+*/
+
 #include "student_tests.h"
 #include "hw6.h"
  
