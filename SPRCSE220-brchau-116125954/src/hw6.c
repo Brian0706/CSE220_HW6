@@ -256,7 +256,6 @@ int wildCardSearch(const char* searchString, const char* replaceString, FILE* in
             }
             /*Write the test string to outline file, if it fails, exit immediately*/
             else if(strlen(testString) != 0 && printToOutput(testString, output)){
-                free(testString);
                 return FAILED_WRITE;
             }
             /*Adds the newline to the file and then increment the line counter.*/
