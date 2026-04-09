@@ -1,0 +1,13 @@
+==90576== Memcheck, a memory error detector
+==90576== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==90576== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==90576== Command: ./bin/hw6 -s Lorem -r HELLO -h -g test tests.in/simple_student_search02.in.txt tests.out/simple_student_search02.out.txt
+==90576== 
+==90576== 
+==90576== HEAP SUMMARY:
+==90576==     in use at exit: 0 bytes in 0 blocks
+==90576==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==90576== 
+==90576== All heap blocks were freed -- no leaks are possible
+==90576== 
+==90576== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,13 @@
+==90810== Memcheck, a memory error detector
+==90810== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==90810== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==90810== Command: ./bin/hw6 -s Lor* -r HI -l 9,15 -w tests.in/wildcard_student_search04.in.txt tests.out/wildcard_student_search04.out.txt
+==90810== 
+==90810== 
+==90810== HEAP SUMMARY:
+==90810==     in use at exit: 0 bytes in 0 blocks
+==90810==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==90810== 
+==90810== All heap blocks were freed -- no leaks are possible
+==90810== 
+==90810== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

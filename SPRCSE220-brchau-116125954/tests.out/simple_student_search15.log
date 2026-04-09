@@ -1,0 +1,13 @@
+==90741== Memcheck, a memory error detector
+==90741== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==90741== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==90741== Command: ./bin/hw6 -r Lop -l 1,23 -s Lo tests.in/simple_student_search15.in.txt tests.out/simple_student_search15.out.txt
+==90741== 
+==90741== 
+==90741== HEAP SUMMARY:
+==90741==     in use at exit: 0 bytes in 0 blocks
+==90741==   total heap usage: 4 allocs, 4 frees, 5,061 bytes allocated
+==90741== 
+==90741== All heap blocks were freed -- no leaks are possible
+==90741== 
+==90741== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,13 @@
+==90892== Memcheck, a memory error detector
+==90892== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==90892== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==90892== Command: ./bin/hw6 -s us* -r RAIN -w tests.in/wildcard_student_search10.in.txt tests.out/wildcard_student_search10.out.txt
+==90892== 
+==90892== 
+==90892== HEAP SUMMARY:
+==90892==     in use at exit: 0 bytes in 0 blocks
+==90892==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==90892== 
+==90892== All heap blocks were freed -- no leaks are possible
+==90892== 
+==90892== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

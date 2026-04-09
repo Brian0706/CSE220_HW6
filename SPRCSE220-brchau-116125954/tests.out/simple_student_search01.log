@@ -1,0 +1,13 @@
+==90551== Memcheck, a memory error detector
+==90551== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==90551== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==90551== Command: ./bin/hw6 -s ipsum -r DONE tests.in/simple_student_search01.in.txt tests.out/simple_student_search01.out.txt
+==90551== 
+==90551== 
+==90551== HEAP SUMMARY:
+==90551==     in use at exit: 0 bytes in 0 blocks
+==90551==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==90551== 
+==90551== All heap blocks were freed -- no leaks are possible
+==90551== 
+==90551== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

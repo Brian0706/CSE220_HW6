@@ -866,6 +866,15 @@ Test(invalid_args_test, l_argument_invalid09, .description="Startline is 0.") {
     expect_error_exit(status, L_ARGUMENT_INVALID);
 }
 
+Test(invalid_args_test, l_argument_invalid10, .description="Two numbers seperated by a lot of commas.") {
+    char *test_name = "l_argument_invalid10";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l 9,,,,,,,,,-10 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
+
 Test(invalid_args_test, l_argument_invalid11, .description="Endline is 0.") {
     char *test_name = "l_argument_invalid11";
     prep_files("turing.txt", test_name);    
@@ -874,11 +883,10 @@ Test(invalid_args_test, l_argument_invalid11, .description="Endline is 0.") {
     expect_error_exit(status, L_ARGUMENT_INVALID);
 }
 
-
-Test(invalid_args_test, l_argument_invalid10, .description="Two numbers seperated by a lot of commas.") {
-    char *test_name = "l_argument_invalid10";
+Test(invalid_args_test, l_argument_invalid12, .description="Wildcard Argument Invalid is also in the arguments") {
+    char *test_name = "l_argument_invalid12";
     prep_files("turing.txt", test_name);    
-    sprintf(args, "-s bar -r test -l 9,,,,,,,,,-10 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s bar -r test -l 10,0 -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, L_ARGUMENT_INVALID);
 }

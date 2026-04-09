@@ -1,0 +1,13 @@
+==90605== Memcheck, a memory error detector
+==90605== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==90605== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==90605== Command: ./bin/hw6 -s Lorem -r HELLO -l 1,30 test tests.in/simple_student_search05.in.txt tests.out/simple_student_search05.out.txt
+==90605== 
+==90605== 
+==90605== HEAP SUMMARY:
+==90605==     in use at exit: 0 bytes in 0 blocks
+==90605==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==90605== 
+==90605== All heap blocks were freed -- no leaks are possible
+==90605== 
+==90605== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
