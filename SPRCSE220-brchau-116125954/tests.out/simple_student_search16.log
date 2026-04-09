@@ -1,0 +1,13 @@
+==32930== Memcheck, a memory error detector
+==32930== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==32930== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==32930== Command: ./bin/hw6 -r Lop -l 1,23 -s Lo tests.in/simple_student_search16.in.txt tests.out/simple_student_search16.out.txt
+==32930== 
+==32930== 
+==32930== HEAP SUMMARY:
+==32930==     in use at exit: 0 bytes in 0 blocks
+==32930==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==32930== 
+==32930== All heap blocks were freed -- no leaks are possible
+==32930== 
+==32930== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

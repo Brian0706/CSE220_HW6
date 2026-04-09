@@ -1,0 +1,13 @@
+==33045== Memcheck, a memory error detector
+==33045== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==33045== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==33045== Command: ./bin/hw6 -w -r RAIN -s Rom* -l 1,23 tests.in/wildcard_student_search09.in.txt tests.out/wildcard_student_search09.out.txt
+==33045== 
+==33045== 
+==33045== HEAP SUMMARY:
+==33045==     in use at exit: 0 bytes in 0 blocks
+==33045==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==33045== 
+==33045== All heap blocks were freed -- no leaks are possible
+==33045== 
+==33045== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,13 @@
+==33198== Memcheck, a memory error detector
+==33198== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==33198== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==33198== Command: ./bin/hw6 -w -r USA -s *us -l 1,23 tests.in/wildcard_student_search20.in.txt tests.out/wildcard_student_search20.out.txt
+==33198== 
+==33198== 
+==33198== HEAP SUMMARY:
+==33198==     in use at exit: 0 bytes in 0 blocks
+==33198==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==33198== 
+==33198== All heap blocks were freed -- no leaks are possible
+==33198== 
+==33198== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

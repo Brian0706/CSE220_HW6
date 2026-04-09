@@ -166,6 +166,31 @@ Test(output_test, simple_search13, .description="Perform a simple replacement wi
     expect_outfile_matches(test_name);
 }
 
+Test(output_test, simple_search14, .description="Perform a simple replacement where searchString overlaps with another string.") {
+    char *test_name = "simple_student_search14";
+    prep_files("overlap.txt", test_name);    
+    sprintf(args, "-r HI -s aa -l 1,1 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, simple_search15, .description="Perform a simple replacement where file is empty") {
+    char *test_name = "simple_student_search15";
+    prep_files("empty.txt", test_name);    
+    sprintf(args, "-r Lop -l 1,23 -s Lo %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+
+Test(output_test, simple_search16, .description="Perform a simple replacement where search string is a substring of replace string") {
+    char *test_name = "simple_student_search16";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-r Lop -l 1,23 -s Lo %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
 Test(output_test, wildcard_search01, .description="Perform a wildcard prefix replacement over some lines. Terms have different lengths.") {
     char *test_name = "wildcard_student_search01";
     prep_files("lorem.txt", test_name);    
@@ -342,6 +367,30 @@ Test(output_test, wildcard_search22, .description="Perform a wildcard prefix rep
     expect_outfile_matches(test_name);
 }
 
+Test(output_test, wildcard_search23, .description="Perform a wildcard prefix replacement over some lines. File is empty.") {
+    char *test_name = "wildcard_student_search23";
+    prep_files("empty.txt", test_name);    
+    sprintf(args, "-w -r TEST -s Stan* -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, wildcard_search24, .description="Perform a wildcard suffix replacement over some lines. File is empty.") {
+    char *test_name = "wildcard_student_search24";
+    prep_files("empty.txt", test_name);    
+    sprintf(args, "-w -r TEST -s *hi -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, wildcard_search25, .description="Perform a wildcard prefix replacement over some lines. Prefix is one letter.") {
+    char *test_name = "wildcard_student_search25";
+    prep_files("rome.txt", test_name);    
+    sprintf(args, "-w -r PUPPY -s p* -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
 /*Valgrind Tests*/
 Test(valgrind_test, simple_search01, .description="Perform a simple replacement over entire file.") {
     char *test_name = "simple_student_search01";
@@ -434,6 +483,27 @@ Test(valgrind_test, simple_search13, .description="Perform a simple replacement 
     expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
+Test(valgrind_test, simple_search14, .description="Perform a simple replacement where searchString overlaps with another string.") {
+    char *test_name = "simple_student_search14";
+    prep_files("overlap.txt", test_name);    
+    sprintf(args, "-r HI -s aa -l 1,1 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+Test(valgrind_test, simple_search15, .description="Perform a simple replacement where file is empty") {
+    char *test_name = "simple_student_search15";
+    prep_files("empty.txt", test_name);    
+    sprintf(args, "-r Lop -l 1,23 -s Lo %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+
+Test(valgrind_test, simple_search16, .description="Perform a simple replacement where search string is a substring of replace string") {
+    char *test_name = "simple_student_search16";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-r Lop -l 1,23 -s Lo %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
 
 Test(valgrind_test, wildcard_search01, .description="Perform a wildcard prefix replacement over some lines. Terms have different lengths.") {
     char *test_name = "wildcard_student_search01";
@@ -586,6 +656,27 @@ Test(valgrind_test, wildcard_search22, .description="Perform a wildcard prefix r
     expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
+Test(valgrind_test, wildcard_search23, .description="Perform a wildcard prefix replacement over some lines. File is empty.") {
+    char *test_name = "wildcard_student_search23";
+    prep_files("empty.txt", test_name);    
+    sprintf(args, "-w -r TEST -s Stan* -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+
+Test(valgrind_test, wildcard_search24, .description="Perform a wildcard suffix replacement over some lines. File is empty.") {
+    char *test_name = "wildcard_student_search24";
+    prep_files("empty.txt", test_name);    
+    sprintf(args, "-w -r TEST -s *hi -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+Test(output_test, wildcard_search25, .description="Perform a wildcard prefix replacement over some lines. Prefix is one letter.") {
+    char *test_name = "wildcard_student_search25";
+    prep_files("rome.txt", test_name);    
+    sprintf(args, "-w -r PUPPY -s p* -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
 
 /*Invalid arguments test*/
 Test(invalid_args_test, args_missing01, .description="Argument missing.") {

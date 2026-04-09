@@ -1,0 +1,13 @@
+==32765== Memcheck, a memory error detector
+==32765== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==32765== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==32765== Command: ./bin/hw6 -s Lorem -r HELLO -l 1,7 test tests.in/simple_student_search03.in.txt tests.out/simple_student_search03.out.txt
+==32765== 
+==32765== 
+==32765== HEAP SUMMARY:
+==32765==     in use at exit: 0 bytes in 0 blocks
+==32765==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==32765== 
+==32765== All heap blocks were freed -- no leaks are possible
+==32765== 
+==32765== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
