@@ -93,4 +93,4 @@ studentTests:
 clean:
 	rm -fr $(BLDD) $(BIND) $(TSTD).in $(TSTD).out *.out $(TEST_RESULTS)
 
-.PHONY: all clean debug criterion setup test update_tests
+.PHONY: all clean debug criterion setup test update_tests studentTests
