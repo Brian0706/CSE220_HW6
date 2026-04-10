@@ -22,10 +22,11 @@ hw6.c behavior:
 Things to Note:
 - All my input and output files are stored in tests.in.org and tests.out.exp respectively
 
-Makefile Changes
-- I have modified the makefile
-  - Now, make test both compiles the code and runs the test
-  - To run my tests that I have made located in student_tests.c, run the command make studentTests
-- Summary:
-  - To run unit tests, you can skip previous steps and just run make test, running make all first and then make test will also work.
-  - To run student tests, just run the command make studentTests.
+Makefile and How to Run Tests
+- The makefile has been modified such that make test will both compile the program and tests, and then the tests will be run.
+- To run my program and test it you can either
+  - Run make or make all, then make test
+  - Just run make test 
+- Then to run the tests run make tests, which will run both the unit_tests and student_tests as 
+make all puts all the tests in one file.
+  - First the unit tests will run followed by the student_tests. 
