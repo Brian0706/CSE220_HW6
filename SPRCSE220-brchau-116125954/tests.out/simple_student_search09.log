@@ -1,0 +1,13 @@
+==54062== Memcheck, a memory error detector
+==54062== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==54062== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==54062== Command: ./bin/hw6 -s *Hello -r HI_THERE test tests.in/simple_student_search09.in.txt tests.out/simple_student_search09.out.txt
+==54062== 
+==54062== 
+==54062== HEAP SUMMARY:
+==54062==     in use at exit: 0 bytes in 0 blocks
+==54062==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==54062== 
+==54062== All heap blocks were freed -- no leaks are possible
+==54062== 
+==54062== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

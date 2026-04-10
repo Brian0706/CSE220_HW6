@@ -1,0 +1,13 @@
+==54278== Memcheck, a memory error detector
+==54278== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==54278== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==54278== Command: ./bin/hw6 -s us* -r RAIN -w tests.in/wildcard_student_search10.in.txt tests.out/wildcard_student_search10.out.txt
+==54278== 
+==54278== 
+==54278== HEAP SUMMARY:
+==54278==     in use at exit: 0 bytes in 0 blocks
+==54278==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==54278== 
+==54278== All heap blocks were freed -- no leaks are possible
+==54278== 
+==54278== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

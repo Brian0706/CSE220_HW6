@@ -1,0 +1,13 @@
+==54040== Memcheck, a memory error detector
+==54040== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==54040== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==54040== Command: ./bin/hw6 -s Romulus -r *ROM test tests.in/simple_student_search08.in.txt tests.out/simple_student_search08.out.txt
+==54040== 
+==54040== 
+==54040== HEAP SUMMARY:
+==54040==     in use at exit: 0 bytes in 0 blocks
+==54040==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==54040== 
+==54040== All heap blocks were freed -- no leaks are possible
+==54040== 
+==54040== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -396,6 +396,22 @@ Test(output_test, wildcard_search25, .description="Perform a wildcard prefix rep
     expect_outfile_matches(test_name);
 }
 
+Test(output_test, wildcard_search26, .description="Perform a wildcard prefix replacement over some lines. Prefix is just a word.") {
+    char *test_name = "wildcard_student_search26";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-w -r TESTING -s Lorem* -l 1,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, wildcard_search27, .description="Perform a wildcard prefix replacement over some lines. Suffix is just a word.") {
+    char *test_name = "wildcard_student_search27";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-w -r TESTING -s *Lorem -l 1,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
 /*Valgrind Tests*/
 Test(valgrind_test, simple_search01, .description="Perform a simple replacement over entire file.") {
     char *test_name = "simple_student_search01";
@@ -683,6 +699,20 @@ Test(valgrind_test, wildcard_search25, .description="Perform a wildcard prefix r
     expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
+Test(valgrind_test, wildcard_search26, .description="Perform a wildcard prefix replacement over some lines. Prefix is just a word.") {
+    char *test_name = "wildcard_student_search26";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-w -r TESTING -s Lorem* -l 1,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+Test(valgrind_test, wildcard_search27, .description="Perform a wildcard prefix replacement over some lines. Suffix is just a word.") {
+    char *test_name = "wildcard_student_search27";
+    prep_files("lorem.txt", test_name);    
+    sprintf(args, "-w -r TESTING -s *Lorem -l 1,23 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
 /*Invalid arguments test*/
 Test(invalid_args_test, args_missing01, .description="Argument missing.") {
     char *test_name = "args_missing01";
@@ -731,6 +761,22 @@ Test(invalid_args_test, s_arg_missing02, .description="S argument missing, but i
     char *test_name = "s_argument_missing02";
     prep_files("unix.txt", test_name);  
     sprintf(args, "-r -s -l 1,10 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, S_ARGUMENT_MISSING);
+}
+
+Test(invalid_args_test, s_arg_missing03, .description="S argument missing, but if after L argument which is also missing.") {
+    char *test_name = "s_argument_missing03";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r test -s -l %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, S_ARGUMENT_MISSING);
+}
+
+Test(invalid_args_test, s_arg_missing04, .description="S argument missing, but if after wildcard is also invalid.") {
+    char *test_name = "s_argument_missing04";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r test -l -s -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, S_ARGUMENT_MISSING);
 }
