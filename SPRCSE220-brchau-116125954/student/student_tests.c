@@ -785,6 +785,20 @@ Test(invalid_args_test, args_missing04, .description="Argument missing, but also
     expect_error_exit(status, MISSING_ARGUMENT);
 }
 
+Test(invalid_args_test, args_missing05, .description="No arguments.") {
+    char *test_name = "args_missing05";
+    sprintf(args, " ");
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, MISSING_ARGUMENT);
+}
+
+Test(invalid_args_test, args_missing06, .description="Just input and output files.") {
+    char *test_name = "args_missing06";
+    sprintf(args, "%s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, MISSING_ARGUMENT);
+}
+
 Test(invalid_args_test, duplicated_args01, .description="S flag appears twice.") {
     char *test_name = "duplicated_args01";
     sprintf(args, "-s end -s -r %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
@@ -884,6 +898,14 @@ Test(invalid_args_test, input_arg_missing02, .description="Input File is Missing
     expect_error_exit(status, INPUT_FILE_MISSING);
 }
 
+Test(invalid_args_test, input_arg_missing03, .description="Input File is Missing and invalid args for L and W") {
+    char *test_name = "_input_arg_missing03";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r end -s *the* -l xyz10,15 -w %s/.in.txt %s/%s.out.txt", TEST_INPUT_DIR, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, INPUT_FILE_MISSING);
+}
+
 Test(invalid_args_test, output_file_unwritable01, .description="Output file is unwritable.") {
     char *test_name = "output_file_unwritable01"; 
     prep_files("unix.txt", test_name);    
@@ -907,6 +929,14 @@ Test(invalid_args_test, output_file_unwritable03, .description="Output file is u
     sprintf(cmd, "touch %s/%s.out.txt; chmod 400 %s/%s.out.txt", TEST_OUTPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     system(cmd);
     sprintf(args, "-s the -r WOLFIE %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, OUTPUT_FILE_UNWRITABLE);
+}
+
+Test(invalid_args_test, output_file_unwritable04, .description="Can't write to root directory.") {
+    char *test_name = "output_file_unwritable04"; 
+    prep_files("unix.txt", test_name);   
+    sprintf(args, "-s the -r WOLFIE %s/%s.in.txt /%s.out.txt", TEST_INPUT_DIR, test_name, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, OUTPUT_FILE_UNWRITABLE);
 }
