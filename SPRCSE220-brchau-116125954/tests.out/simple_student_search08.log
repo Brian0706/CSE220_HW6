@@ -1,0 +1,13 @@
+==81863== Memcheck, a memory error detector
+==81863== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==81863== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==81863== Command: ./bin/hw6 -s Romulus -r *ROM test tests.in/simple_student_search08.in.txt tests.out/simple_student_search08.out.txt
+==81863== 
+==81863== 
+==81863== HEAP SUMMARY:
+==81863==     in use at exit: 0 bytes in 0 blocks
+==81863==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==81863== 
+==81863== All heap blocks were freed -- no leaks are possible
+==81863== 
+==81863== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

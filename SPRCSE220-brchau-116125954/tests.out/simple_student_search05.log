@@ -1,0 +1,13 @@
+==81834== Memcheck, a memory error detector
+==81834== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==81834== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==81834== Command: ./bin/hw6 -s Lorem -r HELLO -l 1,30 test tests.in/simple_student_search05.in.txt tests.out/simple_student_search05.out.txt
+==81834== 
+==81834== 
+==81834== HEAP SUMMARY:
+==81834==     in use at exit: 0 bytes in 0 blocks
+==81834==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==81834== 
+==81834== All heap blocks were freed -- no leaks are possible
+==81834== 
+==81834== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

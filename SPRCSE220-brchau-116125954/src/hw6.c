@@ -101,7 +101,7 @@ int setup(int argc, char **argv, char **searchString,
     int opt; 
     char *endPtr;
     int errorStatus = 0;
-    while((opt = getopt(argc, argv, ":ws:r:l:")) != -1){
+    while((opt = getopt(argc-1, argv, ":ws:r:l:")) != -1){
         switch(opt){
             case ':':
                 switch(optopt){
@@ -126,10 +126,16 @@ int setup(int argc, char **argv, char **searchString,
                 if(argToString(searchString, optarg, &optind)){
                     return DUPLICATE_ARGUMENT;
                 }
+                else if(optind == argc - 1){
+                    *searchString = "";
+                }
                 break;
             case 'r':
                 if(argToString(replaceString, optarg, &optind)){
                     return DUPLICATE_ARGUMENT;
+                }
+                else if(optind == argc - 1){
+                    *replaceString = "";
                 }
                 break;
             case 'l':
@@ -142,6 +148,10 @@ int setup(int argc, char **argv, char **searchString,
                 else if(*optarg =='-'){
                     errorStatus = L_ARGUMENT_INVALID;
                     optind--;
+                    break;
+                }
+                else if(optind == argc - 1){
+                    errorStatus = L_ARGUMENT_INVALID;
                     break;
                 }
                 char larg[strlen(optarg) + 1];

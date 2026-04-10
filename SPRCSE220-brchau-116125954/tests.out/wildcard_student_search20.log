@@ -1,0 +1,13 @@
+==82250== Memcheck, a memory error detector
+==82250== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==82250== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==82250== Command: ./bin/hw6 -w -r USA -s *us -l 1,23 tests.in/wildcard_student_search20.in.txt tests.out/wildcard_student_search20.out.txt
+==82250== 
+==82250== 
+==82250== HEAP SUMMARY:
+==82250==     in use at exit: 0 bytes in 0 blocks
+==82250==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==82250== 
+==82250== All heap blocks were freed -- no leaks are possible
+==82250== 
+==82250== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
