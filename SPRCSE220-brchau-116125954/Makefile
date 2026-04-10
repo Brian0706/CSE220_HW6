@@ -39,7 +39,7 @@ TEST_RESULTS := "test_results.json"
 
 MAKEFLAGS := -j
 
-all: setup $(BIND)/$(TEST) $(BIND)/$(EXEC) 
+all: setup $(BIND)/$(TEST) $(BIND)/$(STUDENT_TEST) $(BIND)/$(EXEC) 
 
 debug: CFLAGS += $(DFLAGS) $(PRINT_STATEMENTS) 
 debug: all
