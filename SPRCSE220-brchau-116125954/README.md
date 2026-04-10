@@ -11,8 +11,9 @@ In my hw6 there are several constraints:
 - For the -l argument, it only checks the first possible numbers
   - Ex: When strtok seperates 10,,15, it will check "10" and then "" and nothing else, this results in an error
 - If a write fails, my code will automatically exit. Although there is an error code for this, -3, this is only used to check for early termination. Therefore, main will still return 0.
-- For the -s, -r, -l arguments, they will check if their argument would have been the input or output file.
-  -Ex: For this set of arguments: "-s test -l -r %s/%s.in.txt %s/%s.out.txt", the error would be R_ARGUMENT_MISSING because the -r is right next to the input file
+- If there was a problem with the file pointers at the very end that results in a file error, my program will check for this and return a -1.
+- My code will not create an output file if the errors MISSING_ARGUMENT, DUPLICATED_ARGUMENTS, and INPUT_FILE_MISSING are detected. However, if any other errors are present, the output file will have been created.
+
 
 Things to Note:
 - All my input and output files are stored in tests.in.org and tests.out.exp respectively

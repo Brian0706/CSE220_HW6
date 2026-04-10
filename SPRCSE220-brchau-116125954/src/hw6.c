@@ -50,10 +50,10 @@ int main(int argc, char *argv[]) {
     if(result == DUPLICATE_ARGUMENT){
         return result;
     }
-    else if((input = fopen(inputFile, "r")) == NULL){
+    if((input = fopen(inputFile, "r")) == NULL){
         return INPUT_FILE_MISSING;
     }
-    else if((output = fopen(outputFile, "w")) == NULL){
+    if((output = fopen(outputFile, "w")) == NULL){
         fclose(input);
         return OUTPUT_FILE_UNWRITABLE;
     }
@@ -67,8 +67,32 @@ int main(int argc, char *argv[]) {
         /*Result is already L_ARGUMENT_INVALID*/
         ;
     }
-    else if(wildcardEnabled && ((*searchString != '*') ==(*(searchString + strlen(searchString) - 1) != '*'))){
-        result = WILDCARD_INVALID;
+    else if(wildcardEnabled){
+        const char* pointer = searchString;
+        /*Performs an XOR to check if the string has * on either ends*/
+        if(((*searchString != '*') ==(*(searchString + strlen(searchString) - 1) != '*'))){
+            result = WILDCARD_INVALID;
+        }
+        else if(*searchString == '*'){
+            pointer++;
+            while(*pointer){
+                if((ispunct((unsigned char) *pointer) || isspace((unsigned char) *pointer))){
+                    result = WILDCARD_INVALID;
+                    break;
+                }
+                pointer++;
+            }
+        }
+        else{
+            int lastCharIndex = strlen(searchString);
+            while(pointer < searchString + lastCharIndex - 1){
+                if((ispunct((unsigned char) *pointer) || isspace((unsigned char) *pointer))){
+                    result = WILDCARD_INVALID;
+                    break;
+                }
+                pointer++;
+            }
+        }
     }
     if(result){
         fclose(input);
@@ -101,7 +125,7 @@ int setup(int argc, char **argv, char **searchString,
     int opt; 
     char *endPtr;
     int errorStatus = 0;
-    while((opt = getopt(argc-1, argv, ":ws:r:l:")) != -1){
+    while((opt = getopt(argc, argv, ":ws:r:l:")) != -1){
         switch(opt){
             case ':':
                 switch(optopt){
@@ -126,16 +150,10 @@ int setup(int argc, char **argv, char **searchString,
                 if(argToString(searchString, optarg, &optind)){
                     return DUPLICATE_ARGUMENT;
                 }
-                else if(optind == argc - 1){
-                    *searchString = "";
-                }
                 break;
             case 'r':
                 if(argToString(replaceString, optarg, &optind)){
                     return DUPLICATE_ARGUMENT;
-                }
-                else if(optind == argc - 1){
-                    *replaceString = "";
                 }
                 break;
             case 'l':
@@ -150,10 +168,6 @@ int setup(int argc, char **argv, char **searchString,
                     optind--;
                     break;
                 }
-                else if(optind == argc - 1){
-                    errorStatus = L_ARGUMENT_INVALID;
-                    break;
-                }
                 char larg[strlen(optarg) + 1];
                 strcpy(larg, optarg);
                 char * token = strtok(larg, ",");
@@ -162,7 +176,7 @@ int setup(int argc, char **argv, char **searchString,
                     break;
                 }
                 *startLine = strtol(token, &endPtr, 10);
-                if(endPtr == token || *endPtr != '\0'||*startLine < 1){
+                if(endPtr == token ||*startLine < 1){
                     errorStatus = L_ARGUMENT_INVALID;
                     break;
                 }
@@ -172,7 +186,7 @@ int setup(int argc, char **argv, char **searchString,
                     break;
                 }
                 *endLine = strtol(token, &endPtr, 10);
-                if(endPtr == token || *endPtr != '\0' || *endLine < 1|| *endLine < *startLine){
+                if(endPtr == token || *endLine < 1|| *endLine < *startLine){
                     errorStatus = L_ARGUMENT_INVALID;
                 }
                 break;
@@ -432,6 +446,7 @@ int argToString(char** dest, char* optarg, int* optind){
         (*optind)--;
     }
     else{
+        printf("%s\n",optarg);
         /*If all is good, have dest point to the argument*/
         *dest = optarg;
     }

@@ -187,11 +187,34 @@ Test(output_test, simple_search15, .description="Perform a simple replacement wh
     expect_outfile_matches(test_name);
 }
 
-
 Test(output_test, simple_search16, .description="Perform a simple replacement where search string is a substring of replace string") {
     char *test_name = "simple_student_search16";
     prep_files("lorem.txt", test_name);    
     sprintf(args, "-r Lop -l 1,23 -s Lo %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, simple_search17, .description="Perform a simple replacement where replacement is the name of the input file.") {
+    char *test_name = "simple_student_search17";
+    prep_files("lorem.txt", test_name);  
+    sprintf(args, "-s Lorem -l 1,23 -r %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, simple_search18, .description="Perform a simple replacement where L argument is not just numbers.") {
+    char *test_name = "simple_student_search18";
+    prep_files("lorem.txt", test_name);  
+    sprintf(args, "-s Lorem -l 1ab,15 -r HI %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    run_using_system_no_valgrind(test_name, args);
+    expect_outfile_matches(test_name);
+}
+
+Test(output_test, simple_search19, .description="Perform a simple replacement where L's endline argument is not just numbers.") {
+    char *test_name = "simple_student_search19";
+    prep_files("lorem.txt", test_name);  
+    sprintf(args, "-s Lorem -l 1,15ab -r HI %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     run_using_system_no_valgrind(test_name, args);
     expect_outfile_matches(test_name);
 }
@@ -518,11 +541,31 @@ Test(valgrind_test, simple_search15, .description="Perform a simple replacement 
     expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
-
 Test(valgrind_test, simple_search16, .description="Perform a simple replacement where search string is a substring of replace string") {
     char *test_name = "simple_student_search16";
     prep_files("lorem.txt", test_name);    
     sprintf(args, "-r Lop -l 1,23 -s Lo %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+Test(valgrind_test, simple_search17, .description="Perform a simple replacement where replacement is the name of the input file.") {
+    char *test_name = "simple_search17";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-s test -l -r %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+Test(valgrind_test, simple_search18, .description="Perform a simple replacement where L argument is not just numbers.") {
+    char *test_name = "simple_student_search18";
+    prep_files("lorem.txt", test_name);  
+    sprintf(args, "-s Lorem -l 1ab,15 -r HI %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    expect_no_valgrind_errors(run_using_system(test_name, args));
+}
+
+Test(valgrind_test, simple_search19, .description="Perform a simple replacement where L's endline argument is not just numbers.") {
+    char *test_name = "simple_student_search19";
+    prep_files("lorem.txt", test_name);  
+    sprintf(args, "-s Lorem -l 1,15ab -r HI %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     expect_no_valgrind_errors(run_using_system(test_name, args));
 }
 
@@ -721,6 +764,27 @@ Test(invalid_args_test, args_missing01, .description="Argument missing.") {
     expect_error_exit(status, MISSING_ARGUMENT);
 }
 
+Test(invalid_args_test, args_missing02, .description="Argument missing, but also duplicate.") {
+    char *test_name = "args_missing02";
+    sprintf(args, "-s -s");
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, MISSING_ARGUMENT);
+}
+
+Test(invalid_args_test, args_missing03, .description="Argument missing, but also WILD_CARD INVALID.") {
+    char *test_name = "args_missing03";
+    sprintf(args, "-s -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, MISSING_ARGUMENT);
+}
+
+Test(invalid_args_test, args_missing04, .description="Argument missing, but also INPUT_FILE_MISSING.") {
+    char *test_name = "args_missing04";
+    sprintf(args, "-s the -r end");
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, MISSING_ARGUMENT);
+}
+
 Test(invalid_args_test, duplicated_args01, .description="S flag appears twice.") {
     char *test_name = "duplicated_args01";
     sprintf(args, "-s end -s -r %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
@@ -745,6 +809,13 @@ Test(invalid_args_test, duplicated_args03, .description="L flag appears twice.")
 Test(invalid_args_test, duplicated_args04, .description="W flag appears twice.") {
     char *test_name = "duplicated_args04";
     sprintf(args, "-s end -r hello -w -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, DUPLICATE_ARGUMENT);
+}
+
+Test(invalid_args_test, duplicated_args05, .description="Input File error is also present.") {
+    char *test_name = "duplicated_args05";
+    sprintf(args, "-s end -r hello -w -w %s/%s.out.txt", TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, DUPLICATE_ARGUMENT);
 }
@@ -781,14 +852,6 @@ Test(invalid_args_test, s_arg_missing04, .description="S argument missing, but i
     expect_error_exit(status, S_ARGUMENT_MISSING);
 }
 
-Test(invalid_args_test, s_arg_missing05, .description="S argument missing but right next to input.") {
-    char *test_name = "s_argument_missing05";
-    prep_files("unix.txt", test_name);  
-    sprintf(args, "-r test -l -w -s %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-    int status = run_using_system_no_valgrind(test_name, args);
-    expect_error_exit(status, S_ARGUMENT_MISSING);
-}
-
 Test(invalid_args_test, r_arg_missing01, .description="R argument missing, but if after L argument is invalid.") {
     char *test_name = "r_arg_missing01";
     prep_files("unix.txt", test_name);  
@@ -801,14 +864,6 @@ Test(invalid_args_test, r_arg_missing02, .description="R flag is not present") {
     char *test_name = "r_arg_missing02";
     prep_files("unix.txt", test_name);  
     sprintf(args, "-s test -l 15,1 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
-    int status = run_using_system_no_valgrind(test_name, args);
-    expect_error_exit(status, R_ARGUMENT_MISSING);
-}
-
-Test(invalid_args_test, r_arg_missing03, .description="R argument missing, but it is right next to the input.") {
-    char *test_name = "r_argument_missing03";
-    prep_files("unix.txt", test_name);  
-    sprintf(args, "-s test -l -r %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, R_ARGUMENT_MISSING);
 }
@@ -953,6 +1008,14 @@ Test(invalid_args_test, l_argument_invalid12, .description="Wildcard Argument In
     expect_error_exit(status, L_ARGUMENT_INVALID);
 }
 
+Test(invalid_args_test, l_argument_invalid13, .description="L flag is right before inputfile") {
+    char *test_name = "l_argument_invalid13";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
 
 Test(invalid_args_test, wildcard_invalid01, .description="Search text is two wildcard indicators.") {
     char *test_name = "wildcard_invalid01";
@@ -982,6 +1045,30 @@ Test(invalid_args_test, wildcard_invalid04, .description="No wildcard marker.") 
     char *test_name = "wildcard_invalid04";
     prep_files("unix.txt", test_name);    
     sprintf(args, "-s a -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_test, wildcard_invalid05, .description="Space inside search term.") {
+    char *test_name = "wildcard_invalid05";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s a b -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_test, wildcard_invalid06, .description="Asterick inside search term.") {
+    char *test_name = "wildcard_invalid06";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s a*b -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_test, wildcard_invalid07, .description="Search term is input file") {
+    char *test_name = "wildcard_invalid06";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-r HELLO -w -l 1,2 -s %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, WILDCARD_INVALID);
 }
