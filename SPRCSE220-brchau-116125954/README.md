@@ -16,6 +16,8 @@ hw6.c behavior:
 - If there was a problem with the file pointers at the very end that results in a file error, my program will check for this and return a -1.
 - My code will not create an output file if the errors MISSING_ARGUMENT, DUPLICATED_ARGUMENTS, and INPUT_FILE_MISSING are detected. However, if any other errors are present, the output file will have been created.
 - When an empty string in passed in for an argument of -s or -r, a S_ARGUMENT_VALID and R_ARGUMENT_INVALID will be thrown for both flags respectively.
+- With the -s and -r flag, if the flag is the last argument before the files, it will take the file path as a string either for replacement or search.
+  - Ex: -l 1,10 -r test -s input.txt output.txt, the searchString will be input.txt 
 
 Things to Note:
 - All my input and output files are stored in tests.in.org and tests.out.exp respectively
