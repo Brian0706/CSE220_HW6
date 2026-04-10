@@ -25,4 +25,4 @@ Makefile Changes
   - To run my tests that I have made located in student_tests.c, run the command make studentTests
 - Summary:
   - To run unit tests, you can skip previous steps and just run make test, running make all first and then make test will also work.
-  - To run student tests, just run the command make studentTests
+  - To run student tests, just run the command make studentTests.
