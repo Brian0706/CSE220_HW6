@@ -866,6 +866,14 @@ Test(invalid_args_test, s_arg_missing04, .description="S argument missing, but i
     expect_error_exit(status, S_ARGUMENT_MISSING);
 }
 
+Test(invalid_args_test, s_arg_missing05, .description="S argument missing, but if after wildcard is also invalid.") {
+    char *test_name = "s_argument_missing04";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r test -l -s \"\" -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, S_ARGUMENT_MISSING);
+}
+
 Test(invalid_args_test, r_arg_missing01, .description="R argument missing, but if after L argument is invalid.") {
     char *test_name = "r_arg_missing01";
     prep_files("unix.txt", test_name);  
@@ -878,6 +886,22 @@ Test(invalid_args_test, r_arg_missing02, .description="R flag is not present") {
     char *test_name = "r_arg_missing02";
     prep_files("unix.txt", test_name);  
     sprintf(args, "-s test -l 15,1 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, R_ARGUMENT_MISSING);
+}
+
+Test(invalid_args_test, r_arg_missing03, .description="R argument missing, but if after W argument is invalid.") {
+    char *test_name = "r_arg_missing03s";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r -s test -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, R_ARGUMENT_MISSING);
+}
+
+Test(invalid_args_test, r_arg_missing04, .description="R argument is empty string.") {
+    char *test_name = "r_arg_missing04";
+    prep_files("unix.txt", test_name);  
+    sprintf(args, "-r \"\" -s test -l 1,15 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, R_ARGUMENT_MISSING);
 }
