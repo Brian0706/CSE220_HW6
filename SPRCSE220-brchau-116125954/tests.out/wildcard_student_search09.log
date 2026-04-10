@@ -1,0 +1,13 @@
+==96418== Memcheck, a memory error detector
+==96418== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==96418== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==96418== Command: ./bin/hw6 -w -r RAIN -s Rom* -l 1,23 tests.in/wildcard_student_search09.in.txt tests.out/wildcard_student_search09.out.txt
+==96418== 
+==96418== 
+==96418== HEAP SUMMARY:
+==96418==     in use at exit: 0 bytes in 0 blocks
+==96418==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==96418== 
+==96418== All heap blocks were freed -- no leaks are possible
+==96418== 
+==96418== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

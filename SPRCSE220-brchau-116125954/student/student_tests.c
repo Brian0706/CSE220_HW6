@@ -1016,6 +1016,14 @@ Test(invalid_args_test, l_argument_invalid13, .description="L flag is right befo
     expect_error_exit(status, L_ARGUMENT_INVALID);
 }
 
+Test(invalid_args_test, l_argument_invalid14, .description="Another seperator besides comma") {
+    char *test_name = "l_argument_invalid14";
+    prep_files("turing.txt", test_name);    
+    sprintf(args, "-s bar -r test -l 1-10 -w %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, L_ARGUMENT_INVALID);
+}
+
 
 Test(invalid_args_test, wildcard_invalid01, .description="Search text is two wildcard indicators.") {
     char *test_name = "wildcard_invalid01";
@@ -1049,24 +1057,40 @@ Test(invalid_args_test, wildcard_invalid04, .description="No wildcard marker.") 
     expect_error_exit(status, WILDCARD_INVALID);
 }
 
-Test(invalid_args_test, wildcard_invalid05, .description="Space inside search term.") {
+Test(invalid_args_test, wildcard_invalid05, .description="Space inside search term of prefix.") {
     char *test_name = "wildcard_invalid05";
     prep_files("unix.txt", test_name);    
-    sprintf(args, "-s a b -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s a b* -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, WILDCARD_INVALID);
 }
 
-Test(invalid_args_test, wildcard_invalid06, .description="Asterick inside search term.") {
+Test(invalid_args_test, wildcard_invalid06, .description="Period inside search term of prefix.") {
     char *test_name = "wildcard_invalid06";
     prep_files("unix.txt", test_name);    
-    sprintf(args, "-s a*b -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    sprintf(args, "-s a.b* -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);
     expect_error_exit(status, WILDCARD_INVALID);
 }
 
-Test(invalid_args_test, wildcard_invalid07, .description="Search term is input file") {
-    char *test_name = "wildcard_invalid06";
+Test(invalid_args_test, wildcard_invalid07, .description="Asterick inside search term of suffix.") {
+    char *test_name = "wildcard_invalid07";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s *a*b -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_test, wildcard_invalid08, .description="Space inside search term of suffix.") {
+    char *test_name = "wildcard_invalid08";
+    prep_files("unix.txt", test_name);    
+    sprintf(args, "-s *a b -r HELLO -w -l 1,2 %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
+    int status = run_using_system_no_valgrind(test_name, args);
+    expect_error_exit(status, WILDCARD_INVALID);
+}
+
+Test(invalid_args_test, wildcard_invalid09, .description="Search term is input file") {
+    char *test_name = "wildcard_invalid09";
     prep_files("unix.txt", test_name);    
     sprintf(args, "-r HELLO -w -l 1,2 -s %s/%s.in.txt %s/%s.out.txt", TEST_INPUT_DIR, test_name, TEST_OUTPUT_DIR, test_name);
     int status = run_using_system_no_valgrind(test_name, args);

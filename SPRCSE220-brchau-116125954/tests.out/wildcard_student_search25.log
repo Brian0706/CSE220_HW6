@@ -1,0 +1,13 @@
+==96645== Memcheck, a memory error detector
+==96645== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==96645== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==96645== Command: ./bin/hw6 -w -r PUPPY -s p* -l 1,15 tests.in/wildcard_student_search25.in.txt tests.out/wildcard_student_search25.out.txt
+==96645== 
+==96645== 
+==96645== HEAP SUMMARY:
+==96645==     in use at exit: 0 bytes in 0 blocks
+==96645==   total heap usage: 5 allocs, 5 frees, 9,337 bytes allocated
+==96645== 
+==96645== All heap blocks were freed -- no leaks are possible
+==96645== 
+==96645== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

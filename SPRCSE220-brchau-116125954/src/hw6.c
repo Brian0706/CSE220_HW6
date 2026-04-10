@@ -446,7 +446,6 @@ int argToString(char** dest, char* optarg, int* optind){
         (*optind)--;
     }
     else{
-        printf("%s\n",optarg);
         /*If all is good, have dest point to the argument*/
         *dest = optarg;
     }

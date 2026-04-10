@@ -1,0 +1,13 @@
+==96125== Memcheck, a memory error detector
+==96125== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==96125== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==96125== Command: ./bin/hw6 -s Lorem -r HELLO -l 1,23 test tests.in/simple_student_search06.in.txt tests.out/simple_student_search06.out.txt
+==96125== 
+==96125== 
+==96125== HEAP SUMMARY:
+==96125==     in use at exit: 0 bytes in 0 blocks
+==96125==   total heap usage: 5 allocs, 5 frees, 9,157 bytes allocated
+==96125== 
+==96125== All heap blocks were freed -- no leaks are possible
+==96125== 
+==96125== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
